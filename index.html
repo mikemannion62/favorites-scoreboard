@@ -1,0 +1,449 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f1f0e9">
+  <title>Favorites Scoreboard</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --paper: #f1f0e9;
+      --ink: #191d1c;
+      --muted: #727772;
+      --line: #d7d8d0;
+      --card: #fbfbf7;
+      --red: #d44a3d;
+      --green: #26745e;
+      --gold: #e4b947;
+      --blue: #427a9b;
+      font-family: "Aptos", "Segoe UI", sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-width: 320px;
+      background-color: var(--paper);
+      background-image: radial-gradient(#c9cbc2 0.65px, transparent 0.65px);
+      background-size: 14px 14px;
+      color: var(--ink);
+    }
+
+    button { font: inherit; }
+
+    .masthead {
+      min-height: 58px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 0 5vw;
+      color: #f8f8f3;
+      background: var(--ink);
+    }
+
+    .wordmark, .mast-meta, .eyebrow, .league, .status, .date-label, .updated {
+      font-family: "Bahnschrift", "Arial Narrow", sans-serif;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    .wordmark { font-size: 12px; }
+    .mast-meta { color: #bec4bd; font-size: 10px; }
+
+    .mast-meta span {
+      display: inline-block;
+      width: 7px;
+      height: 7px;
+      margin-right: 8px;
+      border-radius: 50%;
+      background: #7ac394;
+      box-shadow: 0 0 0 3px #7ac39425;
+      vertical-align: 1px;
+    }
+
+    main { width: min(1160px, 90vw); margin: 0 auto; }
+
+    .intro {
+      display: flex;
+      justify-content: space-between;
+      align-items: end;
+      gap: 24px;
+      padding: 47px 0 27px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .eyebrow { margin: 0 0 10px; color: var(--red); font-size: 10px; }
+
+    h1 {
+      margin: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(36px, 5.5vw, 62px);
+      font-weight: 500;
+      line-height: .98;
+      letter-spacing: 0;
+    }
+
+    .intro-note {
+      max-width: 230px;
+      margin: 0 0 3px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.5;
+      text-align: right;
+    }
+
+    .toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 19px 0;
+    }
+
+    .date-control, .date-arrows { display: flex; align-items: center; }
+    .date-control { gap: 12px; }
+    .date-arrows { gap: 5px; }
+
+    .icon-button, .today-button {
+      display: grid;
+      min-width: 34px;
+      height: 34px;
+      place-items: center;
+      border: 1px solid var(--line);
+      border-radius: 3px;
+      background: var(--card);
+      color: var(--ink);
+      cursor: pointer;
+    }
+
+    .icon-button:hover, .today-button:hover { border-color: var(--ink); }
+    .icon-button:focus-visible, .today-button:focus-visible { outline: 2px solid var(--red); outline-offset: 2px; }
+    .icon-button svg { width: 14px; height: 14px; }
+
+    .today-button {
+      width: auto;
+      padding: 0 11px;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .date-label { min-width: 170px; font-size: 12px; }
+    .updated { color: var(--muted); font-size: 9px; text-align: right; }
+
+    .scoreboard {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+      padding-bottom: 28px;
+    }
+
+    .team-card {
+      --team-color: var(--red);
+      position: relative;
+      display: flex;
+      min-height: 330px;
+      flex-direction: column;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 3px;
+      background: var(--card);
+      animation: settle-in .42s both;
+    }
+
+    .team-card:nth-child(2) { animation-delay: .07s; }
+    .team-card:nth-child(3) { animation-delay: .14s; }
+    .team-card::before { position: absolute; inset: 0 0 auto; height: 4px; background: var(--team-color); content: ""; }
+    .team-card[data-team="sabres"] { --team-color: #26745e; }
+    .team-card[data-team="cardinals"] { --team-color: #b33d3d; }
+
+    .card-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 21px 19px 15px;
+    }
+
+    .league { color: var(--muted); font-size: 9px; }
+    .status { min-height: 20px; color: var(--muted); font-size: 9px; }
+
+    .status.live { color: #fff; padding: 5px 7px; border-radius: 2px; background: var(--red); }
+    .status.final { color: var(--green); }
+
+    .team-identity {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+      padding: 3px 19px 19px;
+    }
+
+    .team-logo {
+      width: 58px;
+      height: 58px;
+      flex: 0 0 58px;
+      object-fit: contain;
+    }
+
+    .team-name {
+      margin: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 22px;
+      font-weight: 500;
+      line-height: 1.08;
+    }
+
+    .team-city { margin: 5px 0 0; color: var(--muted); font-size: 11px; }
+
+    .matchup {
+      display: flex;
+      min-height: 119px;
+      flex: 1;
+      flex-direction: column;
+      justify-content: center;
+      padding: 16px 19px;
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      background: #f5f5ef;
+    }
+
+    .score-lines { display: grid; gap: 7px; }
+    .score-line { display: flex; min-width: 0; align-items: center; gap: 9px; }
+    .score-logo { width: 28px; height: 28px; flex: 0 0 28px; object-fit: contain; }
+    .score-team-name { overflow: hidden; font-size: 13px; font-weight: 600; text-overflow: ellipsis; white-space: nowrap; }
+    .score { flex: 0 0 auto; margin-left: auto; font-family: Georgia, "Times New Roman", serif; font-size: 25px; font-variant-numeric: tabular-nums; }
+    .game-detail { margin: 9px 0 0; color: var(--muted); font-size: 10px; }
+
+    .empty-game { color: var(--muted); font-family: Georgia, "Times New Roman", serif; font-size: 17px; }
+
+    .card-bottom {
+      display: flex;
+      min-height: 42px;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 0 19px;
+      color: var(--muted);
+      font-size: 10px;
+    }
+
+    .record { font-variant-numeric: tabular-nums; }
+    .source { padding: 0 0 24px; color: var(--muted); font-size: 10px; }
+    .source a { color: inherit; }
+
+    .error-note { color: var(--red); }
+
+    @keyframes settle-in {
+      from { opacity: 0; transform: translateY(7px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 760px) {
+      main { width: min(560px, 90vw); }
+      .intro { padding-top: 35px; }
+      .intro-note { max-width: 180px; font-size: 12px; }
+      .scoreboard { grid-template-columns: 1fr; gap: 10px; }
+      .team-card { min-height: 0; }
+      .team-identity { padding-bottom: 15px; }
+      .matchup { min-height: 100px; }
+    }
+
+    @media (max-width: 460px) {
+      .masthead { padding: 0 5vw; }
+      .mast-meta { font-size: 8px; }
+      .intro { align-items: start; flex-direction: column; gap: 12px; }
+      .intro-note { max-width: 260px; margin: 0; text-align: left; }
+      .toolbar { align-items: end; }
+      .date-control { gap: 7px; }
+      .date-label { min-width: 0; font-size: 10px; }
+      .updated { max-width: 98px; font-size: 8px; line-height: 1.5; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; }
+    }
+  </style>
+</head>
+<body>
+  <header class="masthead">
+    <div class="wordmark">The Favorites Desk</div>
+    <div class="mast-meta"><span aria-hidden="true"></span>Scores refresh every minute</div>
+  </header>
+
+  <main>
+    <section class="intro" aria-labelledby="page-title">
+      <div>
+        <p class="eyebrow">Buffalo &middot; Arizona</p>
+        <h1 id="page-title">The scoreboard</h1>
+      </div>
+      <p class="intro-note">Just your teams, their games, and the score as it moves.</p>
+    </section>
+
+    <section class="toolbar" aria-label="Scoreboard date controls">
+      <div class="date-control">
+        <div class="date-arrows">
+          <button class="icon-button" id="previous-day" type="button" aria-label="Previous day" title="Previous day">
+            <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="m10 3-5 5 5 5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <button class="icon-button" id="next-day" type="button" aria-label="Next day" title="Next day">
+            <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="m6 3 5 5-5 5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
+        <div class="date-label" id="selected-date" aria-live="polite"></div>
+        <button class="today-button" id="today" type="button">Today</button>
+      </div>
+      <div class="updated" id="updated" aria-live="polite">Connecting to score feed</div>
+    </section>
+
+    <section class="scoreboard" id="scoreboard" aria-label="Favorite team scores" aria-live="polite"></section>
+    <footer class="source">Scores and schedules via <a href="https://www.espn.com/" target="_blank" rel="noreferrer">ESPN</a>.</footer>
+  </main>
+
+  <script>
+    const teams = [
+      { key: "bills", name: "Buffalo Bills", city: "Buffalo", league: "NFL", sport: "football", leaguePath: "nfl", id: "2" },
+      { key: "sabres", name: "Buffalo Sabres", city: "Buffalo", league: "NHL", sport: "hockey", leaguePath: "nhl", id: "2" },
+      { key: "cardinals", name: "Arizona Cardinals", city: "Arizona", league: "NFL", sport: "football", leaguePath: "nfl", id: "22" }
+    ];
+
+    const scoreboard = document.querySelector("#scoreboard");
+    const updated = document.querySelector("#updated");
+    const dateLabel = document.querySelector("#selected-date");
+    let selectedDate = new Date();
+    let refreshTimer;
+    let latestRequest = 0;
+
+    function dateKey(date) {
+      return `${date.getFullYear()}${String(date.getMonth() + 1).padStart(2, "0")}${String(date.getDate()).padStart(2, "0")}`;
+    }
+
+    function isToday(date) {
+      return dateKey(date) === dateKey(new Date());
+    }
+
+    function formatDate(date) {
+      if (isToday(date)) return "Today";
+      return new Intl.DateTimeFormat(undefined, { weekday: "short", month: "short", day: "numeric" }).format(date);
+    }
+
+    function setDateLabel() {
+      dateLabel.textContent = `${formatDate(selectedDate)} · ${new Intl.DateTimeFormat(undefined, { month: "long", day: "numeric", year: "numeric" }).format(selectedDate)}`;
+    }
+
+    function gameForTeam(events, teamId) {
+      return events.find(event => event.competitions?.[0]?.competitors?.some(item => item.team?.id === teamId));
+    }
+
+    function formatStart(date) {
+      return new Intl.DateTimeFormat(undefined, { hour: "numeric", minute: "2-digit" }).format(new Date(date));
+    }
+
+    function gameInfo(event, teamId) {
+      const competition = event.competitions[0];
+      const competitors = competition.competitors || [];
+      const team = competitors.find(item => item.team?.id === teamId);
+      const opponent = competitors.find(item => item.team?.id !== teamId);
+      const status = event.status?.type || {};
+      const isLive = status.state === "in";
+      const isFinal = status.completed === true;
+      const kickoff = new Date(event.date);
+      const detail = isLive
+        ? [event.status?.period ? `Period ${event.status.period}` : "", event.status?.displayClock].filter(Boolean).join(" · ")
+        : isFinal
+          ? status.shortDetail || "Final"
+          : `${team?.homeAway === "home" ? "vs." : "at"} ${formatStart(event.date)}`;
+
+      return {
+        opponent,
+        team,
+        isLive,
+        isFinal,
+        detail,
+        location: team?.homeAway === "home" ? "Home" : "Away",
+        record: team?.records?.[0]?.summary || "",
+        date: kickoff
+      };
+    }
+
+    function renderCard(teamConfig, events) {
+      const event = gameForTeam(events, teamConfig.id);
+      const game = event ? gameInfo(event, teamConfig.id) : null;
+      const teamLogo = game?.team?.team?.logo || "";
+      const statusClass = game?.isLive ? "live" : game?.isFinal ? "final" : "";
+      const statusText = game ? (game.isLive ? "Live now" : game.isFinal ? "Final" : "Game day") : "No game";
+      const matchup = game
+        ? `<div class="score-lines">
+            <div class="score-line">
+              ${game.team?.team?.logo ? `<img class="score-logo" src="${game.team.team.logo}" alt="" loading="lazy">` : ""}
+              <span class="score-team-name">${game.team?.team?.displayName || teamConfig.name}</span>
+              <span class="score">${game.team?.score ?? "–"}</span>
+            </div>
+            <div class="score-line">
+              ${game.opponent?.team?.logo ? `<img class="score-logo" src="${game.opponent.team.logo}" alt="" loading="lazy">` : ""}
+              <span class="score-team-name">${game.opponent?.team?.displayName || "Opponent"}</span>
+              <span class="score">${game.opponent?.score ?? "–"}</span>
+            </div>
+          </div>
+          <p class="game-detail">${game.detail}${game.isLive ? "" : ` · ${game.location}`}</p>`
+        : `<div class="empty-game">No game on this date.</div>`;
+
+      return `<article class="team-card" data-team="${teamConfig.key}">
+        <div class="card-top"><span class="league">${teamConfig.league} / ${teamConfig.city}</span><span class="status ${statusClass}">${statusText}</span></div>
+        <div class="team-identity">
+          ${teamLogo ? `<img class="team-logo" src="${teamLogo}" alt="" loading="lazy">` : `<div class="team-logo" aria-hidden="true"></div>`}
+          <div><h2 class="team-name">${teamConfig.name}</h2><p class="team-city">${teamConfig.league} &middot; ${game?.location || ""}</p></div>
+        </div>
+        <div class="matchup">${matchup}</div>
+        <div class="card-bottom"><span>${game ? (game.isLive ? "IN PROGRESS" : game.isFinal ? "COMPLETED" : formatDate(game.date)) : "NEXT ON THE SCHEDULE"}</span><span class="record">${game?.record || ""}</span></div>
+      </article>`;
+    }
+
+    async function loadScores() {
+      const requestId = ++latestRequest;
+      clearTimeout(refreshTimer);
+      setDateLabel();
+      updated.textContent = "Updating scores";
+      const date = dateKey(selectedDate);
+      const leagueConfigs = [...new Map(teams.map(team => [team.leaguePath, team])).values()];
+      const results = await Promise.allSettled(leagueConfigs.map(async league => {
+        const response = await fetch(`https://site.api.espn.com/apis/site/v2/sports/${league.sport}/${league.leaguePath}/scoreboard?dates=${date}`);
+        if (!response.ok) throw new Error(`Score feed returned ${response.status}`);
+        return [league.leaguePath, (await response.json()).events || []];
+      }));
+
+      const feeds = new Map();
+      let failures = 0;
+      for (const result of results) {
+        if (result.status === "fulfilled") feeds.set(...result.value);
+        else failures++;
+      }
+
+      if (requestId !== latestRequest) return;
+      scoreboard.innerHTML = teams.map(team => renderCard(team, feeds.get(team.leaguePath) || [])).join("");
+      const time = new Intl.DateTimeFormat(undefined, { hour: "numeric", minute: "2-digit", second: "2-digit" }).format(new Date());
+      updated.textContent = failures === results.length ? "Score feed unavailable" : `${failures ? "Partial update" : "Updated"} ${time}`;
+      updated.classList.toggle("error-note", failures > 0);
+
+      if (isToday(selectedDate)) refreshTimer = setTimeout(loadScores, 60000);
+    }
+
+    function shiftDate(days) {
+      selectedDate = new Date(selectedDate);
+      selectedDate.setDate(selectedDate.getDate() + days);
+      loadScores();
+    }
+
+    document.querySelector("#previous-day").addEventListener("click", () => shiftDate(-1));
+    document.querySelector("#next-day").addEventListener("click", () => shiftDate(1));
+    document.querySelector("#today").addEventListener("click", () => {
+      selectedDate = new Date();
+      loadScores();
+    });
+
+    loadScores();
+  </script>
+</body>
+</html>

@@ -217,6 +217,18 @@
     .score { flex: 0 0 auto; margin-left: auto; font-family: Georgia, "Times New Roman", serif; font-size: 25px; font-variant-numeric: tabular-nums; }
     .game-detail { margin: 9px 0 0; color: var(--muted); font-size: 10px; }
 
+    .scoring-summary { margin-top: 13px; padding-top: 11px; border-top: 1px solid var(--line); }
+    .summary-title { margin: 0 0 8px; font-size: 10px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+    .period-table { width: 100%; border-collapse: collapse; table-layout: fixed; font-size: 10px; font-variant-numeric: tabular-nums; }
+    .period-table th, .period-table td { padding: 4px 3px; text-align: right; }
+    .period-table th:first-child, .period-table td:first-child { width: 43%; overflow: hidden; text-align: left; text-overflow: ellipsis; white-space: nowrap; }
+    .period-table thead { color: var(--muted); }
+    .period-table tbody tr + tr { border-top: 1px solid var(--line); }
+    .scoring-plays { display: grid; gap: 7px; margin: 10px 0 0; padding: 0; list-style: none; }
+    .scoring-play { display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 7px; font-size: 10px; line-height: 1.4; }
+    .play-meta { color: var(--muted); font-weight: 700; white-space: nowrap; }
+    .summary-note { margin: 8px 0 0; color: var(--muted); font-size: 10px; line-height: 1.4; }
+
     .empty-game { color: var(--muted); font-family: Georgia, "Times New Roman", serif; font-size: 17px; }
 
     .card-bottom {
@@ -357,6 +369,7 @@
           : `${team?.homeAway === "home" ? "vs." : "at"} ${formatStart(event.date)}`;
 
       return {
+        eventId: event.id,
         opponent,
         team,
         isLive,
@@ -368,12 +381,61 @@
       };
     }
 
-    function renderCard(teamConfig, events) {
+    function renderScoringSummary(game, summary, leaguePath, summaryUnavailable) {
+      const periods = [...new Set([
+        ...(game.team?.linescores || []),
+        ...(game.opponent?.linescores || [])
+      ].map(item => item.period).filter(Number.isFinite))].sort((a, b) => a - b);
+      const periodPrefix = leaguePath === "nfl" ? "Q" : "P";
+      const teamsWithScores = [
+        { competitor: game.team, name: game.team?.team?.abbreviation || game.team?.team?.shortDisplayName || game.team?.team?.displayName || "Favorite" },
+        { competitor: game.opponent, name: game.opponent?.team?.abbreviation || game.opponent?.team?.shortDisplayName || game.opponent?.team?.displayName || "Opponent" }
+      ];
+      const periodTable = periods.length
+        ? `<table class="period-table">
+            <thead><tr><th scope="col">Team</th>${periods.map(period => `<th scope="col">${periodPrefix}${period}</th>`).join("")}</tr></thead>
+            <tbody>${teamsWithScores.map(({ competitor, name }) => `<tr>
+              <th scope="row">${name}</th>
+              ${periods.map(period => {
+                const lineScore = competitor?.linescores?.find(item => item.period === period);
+                return `<td>${lineScore?.displayValue ?? lineScore?.value ?? "–"}</td>`;
+              }).join("")}
+            </tr>`).join("")}</tbody>
+          </table>`
+        : `<p class="summary-note">Period scores will appear once scoring begins.</p>`;
+      const plays = Array.isArray(summary?.scoringPlays)
+        ? summary.scoringPlays
+        : Array.isArray(summary?.plays)
+          ? summary.plays.filter(play => play.scoringPlay)
+          : [];
+      const scoringPlays = summaryUnavailable
+        ? `<p class="summary-note error-note">Scoring plays unavailable.</p>`
+        : plays.length
+          ? `<ol class="scoring-plays">${plays.map(play => {
+              const period = play.period?.number ?? play.periodNumber;
+              const periodLabel = Number.isFinite(period) ? `${periodPrefix}${period}` : "";
+              const clock = play.clock?.displayValue || "";
+              const meta = [periodLabel, clock].filter(Boolean).join(" · ");
+              return `<li class="scoring-play"><span class="play-meta">${meta}</span><span>${play.text || play.type?.text || "Scoring play"}</span></li>`;
+            }).join("")}</ol>`
+          : `<p class="summary-note">${game.isLive ? "No scoring plays yet." : game.isFinal ? "No scoring plays." : "Scoring plays will appear once the game begins."}</p>`;
+
+      return `<section class="scoring-summary" aria-label="Scoring summary">
+        <h3 class="summary-title">Scoring summary</h3>
+        ${periodTable}
+        ${scoringPlays}
+      </section>`;
+    }
+
+    function renderCard(teamConfig, events, summaries, summaryUnavailable) {
       const event = gameForTeam(events, teamConfig.id);
       const game = event ? gameInfo(event, teamConfig.id) : null;
       const teamLogo = game?.team?.team?.logo || "";
       const statusClass = game?.isLive ? "live" : game?.isFinal ? "final" : "";
       const statusText = game ? (game.isLive ? "Live now" : game.isFinal ? "Final" : "Game day") : "No game";
+      const gameSummary = game
+        ? renderScoringSummary(game, summaries.get(game.eventId), teamConfig.leaguePath, summaryUnavailable.has(game.eventId))
+        : "";
       const matchup = game
         ? `<div class="score-lines">
             <div class="score-line">
@@ -387,7 +449,8 @@
               <span class="score">${game.opponent?.score ?? "–"}</span>
             </div>
           </div>
-          <p class="game-detail">${game.detail}${game.isLive ? "" : ` · ${game.location}`}</p>`
+          <p class="game-detail">${game.detail}${game.isLive ? "" : ` · ${game.location}`}</p>
+          ${gameSummary}`
         : `<div class="empty-game">No game on this date.</div>`;
 
       return `<article class="team-card" data-team="${teamConfig.key}">
@@ -415,16 +478,39 @@
       }));
 
       const feeds = new Map();
-      let failures = 0;
+      let feedFailures = 0;
       for (const result of results) {
         if (result.status === "fulfilled") feeds.set(...result.value);
-        else failures++;
+        else feedFailures++;
       }
 
       if (requestId !== latestRequest) return;
-      scoreboard.innerHTML = teams.map(team => renderCard(team, feeds.get(team.leaguePath) || [])).join("");
+      const gameRequests = new Map();
+      for (const team of teams) {
+        const event = gameForTeam(feeds.get(team.leaguePath) || [], team.id);
+        if (event) gameRequests.set(event.id, { event, team });
+      }
+      const requestedGames = [...gameRequests.values()];
+      const summaryResults = await Promise.allSettled(requestedGames.map(async ({ event, team }) => {
+        const response = await fetch(`https://site.api.espn.com/apis/site/v2/sports/${team.sport}/${team.leaguePath}/summary?event=${event.id}`);
+        if (!response.ok) throw new Error(`Score summary returned ${response.status}`);
+        return [event.id, await response.json()];
+      }));
+      const summaries = new Map();
+      const summaryUnavailable = new Set();
+      let failures = feedFailures;
+      for (const [index, result] of summaryResults.entries()) {
+        if (result.status === "fulfilled") summaries.set(...result.value);
+        else {
+          failures++;
+          summaryUnavailable.add(requestedGames[index].event.id);
+        }
+      }
+
+      if (requestId !== latestRequest) return;
+      scoreboard.innerHTML = teams.map(team => renderCard(team, feeds.get(team.leaguePath) || [], summaries, summaryUnavailable)).join("");
       const time = new Intl.DateTimeFormat(undefined, { hour: "numeric", minute: "2-digit", second: "2-digit" }).format(new Date());
-      updated.textContent = failures === results.length ? "Score feed unavailable" : `${failures ? "Partial update" : "Updated"} ${time}`;
+      updated.textContent = feedFailures === results.length ? "Score feed unavailable" : `${failures ? "Partial update" : "Updated"} ${time}`;
       updated.classList.toggle("error-note", failures > 0);
 
       if (isToday(selectedDate)) refreshTimer = setTimeout(loadScores, 60000);

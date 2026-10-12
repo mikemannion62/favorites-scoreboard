@@ -776,8 +776,8 @@
       ];
       const opponentName = game.opponent?.team?.displayName || "Opponent";
       const teamName = game.team?.team?.displayName || teamConfig.name;
-      const teamHasBall = teamConfig.leaguePath === "nfl" && teamHasPossession(event, summary, game.team);
-      const opponentHasBall = teamConfig.leaguePath === "nfl" && teamHasPossession(event, summary, game.opponent);
+      const teamHasBall = game.isLive && teamConfig.leaguePath === "nfl" && teamHasPossession(event, summary, game.team);
+      const opponentHasBall = game.isLive && teamConfig.leaguePath === "nfl" && teamHasPossession(event, summary, game.opponent);
       const scoringSummary = renderScoringSummary(game, summary, teamConfig.leaguePath, summaryUnavailable);
       const performance = summaryUnavailable
         ? `<p class="stats-unavailable">Game performance stats are temporarily unavailable.</p>`
@@ -814,8 +814,8 @@
       const statusClass = game?.isLive ? "live" : game?.isFinal ? "final" : "";
       const statusText = game ? (game.isLive ? "Live now" : game.isFinal ? "Final" : "Game day") : "No game";
       const summary = game ? summaries.get(game.eventId) : null;
-      const teamHasBall = Boolean(game && teamConfig.leaguePath === "nfl" && teamHasPossession(event, summary, game.team));
-      const opponentHasBall = Boolean(game && teamConfig.leaguePath === "nfl" && teamHasPossession(event, summary, game.opponent));
+      const teamHasBall = Boolean(game?.isLive && teamConfig.leaguePath === "nfl" && teamHasPossession(event, summary, game.team));
+      const opponentHasBall = Boolean(game?.isLive && teamConfig.leaguePath === "nfl" && teamHasPossession(event, summary, game.opponent));
       const gameSummary = game
         ? renderScoringSummary(game, summary, teamConfig.leaguePath, summaryUnavailable.has(game.eventId))
         : "";

@@ -593,6 +593,12 @@
       return Number.isFinite(parsed) ? parsed : 0;
     }
 
+    function formatSavePercentage(value) {
+      const parsed = Number.parseFloat(String(value ?? ""));
+      if (!Number.isFinite(parsed)) return "—";
+      return `${(parsed <= 1 ? parsed * 100 : parsed).toFixed(1)}%`;
+    }
+
     function renderComparisonTable(teams, rows) {
       return `<div class="player-table-wrap"><table class="stats-table">
         <thead><tr><th scope="col">Stat</th>${teams.map(team => `<th scope="col">${escapeHtml(team.competitor?.team?.abbreviation || team.competitor?.team?.displayName || "Team")}</th>`).join("")}</tr></thead>
@@ -741,7 +747,7 @@
                 <th scope="row">${escapeHtml(athlete.athlete?.displayName || "Goalie")}</th>
                 <td>${escapeHtml(playerStat(goalies, athlete, "shotsAgainst"))}</td>
                 <td>${escapeHtml(playerStat(goalies, athlete, "saves"))}</td>
-                <td>${escapeHtml(playerStat(goalies, athlete, "savePct"))}</td>
+                <td>${escapeHtml(formatSavePercentage(playerStat(goalies, athlete, "savePct")))}</td>
                 <td>${escapeHtml(playerStat(goalies, athlete, "timeOnIce"))}</td>
               </tr>`).join("")}</tbody>
             </table></div>`

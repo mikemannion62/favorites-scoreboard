@@ -228,6 +228,78 @@
     .scoring-play { display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 7px; font-size: 10px; line-height: 1.4; }
     .play-meta { color: var(--muted); font-weight: 700; white-space: nowrap; }
     .summary-note { margin: 8px 0 0; color: var(--muted); font-size: 10px; line-height: 1.4; }
+    .game-detail-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: 9px; }
+    .game-detail-row .game-detail { margin: 0; }
+    .expand-button, .dialog-close {
+      border: 1px solid var(--line);
+      border-radius: 3px;
+      background: var(--card);
+      color: var(--ink);
+      cursor: pointer;
+      font: inherit;
+    }
+    .expand-button { flex: 0 0 auto; padding: 6px 9px; font-size: 10px; font-weight: 700; }
+    .expand-button:hover, .dialog-close:hover { border-color: var(--ink); }
+    .expand-button:focus-visible, .dialog-close:focus-visible { outline: 2px solid var(--red); outline-offset: 2px; }
+    .possession-indicator { display: inline-flex; align-items: center; gap: 4px; color: var(--green); font-size: 9px; font-weight: 700; }
+    .possession-indicator svg { width: 15px; height: 15px; }
+
+    .game-dialog {
+      width: 100vw;
+      max-width: none;
+      height: 100dvh;
+      max-height: none;
+      margin: 0;
+      inset: 0;
+      padding: 0;
+      border: 0;
+      background: var(--paper);
+      color: var(--ink);
+    }
+    .game-dialog::backdrop { background: #191d1cdd; }
+    .dialog-shell { display: flex; width: 100%; height: 100%; flex-direction: column; }
+    .dialog-header {
+      position: sticky;
+      z-index: 1;
+      top: 0;
+      display: flex;
+      flex: 0 0 auto;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 14px max(5vw, calc((100vw - 1100px) / 2));
+      border-bottom: 1px solid var(--line);
+      background: var(--card);
+    }
+    .dialog-heading { min-width: 0; }
+    .dialog-heading h2 { margin: 0; font-family: Georgia, "Times New Roman", serif; font-size: clamp(22px, 3vw, 34px); font-weight: 500; }
+    .dialog-heading p { margin: 4px 0 0; color: var(--muted); font-size: 11px; }
+    .dialog-close { width: 38px; height: 38px; flex: 0 0 38px; font-size: 23px; line-height: 1; }
+    .dialog-content { width: min(1100px, 90vw); min-height: 0; flex: 1; margin: 0 auto; padding: 24px 0 48px; overflow-y: auto; }
+    .expanded-score { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: center; gap: 20px; padding: 24px; border: 1px solid var(--line); background: var(--card); }
+    .expanded-team { display: flex; min-width: 0; align-items: center; gap: 12px; }
+    .expanded-team:last-child { justify-content: flex-end; text-align: right; }
+    .expanded-team img { width: 52px; height: 52px; flex: 0 0 52px; object-fit: contain; }
+    .expanded-team-name { font-size: 14px; font-weight: 700; }
+    .expanded-score-value { font-family: Georgia, "Times New Roman", serif; font-size: clamp(34px, 6vw, 60px); font-variant-numeric: tabular-nums; }
+    .expanded-score-separator { color: var(--muted); font-size: 18px; }
+    .expanded-score-detail { margin: 12px 0 0; color: var(--muted); font-size: 12px; text-align: center; }
+    .expanded-section { margin-top: 28px; }
+    .expanded-section h3 { margin: 0 0 12px; font-family: Georgia, "Times New Roman", serif; font-size: 23px; font-weight: 500; }
+    .expanded-section h4 { margin: 20px 0 8px; font-size: 12px; letter-spacing: .06em; text-transform: uppercase; }
+    .expanded-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+    .expanded-team-panel { min-width: 0; padding: 17px; border: 1px solid var(--line); background: var(--card); }
+    .expanded-team-panel h4 { margin-top: 0; }
+    .stats-table { width: 100%; border-collapse: collapse; font-size: 12px; font-variant-numeric: tabular-nums; }
+    .stats-table th, .stats-table td { padding: 8px 6px; border-bottom: 1px solid var(--line); text-align: right; }
+    .stats-table thead { color: var(--muted); font-size: 10px; }
+    .stats-table th:first-child, .stats-table td:first-child { text-align: left; }
+    .stats-table tbody tr:last-child th, .stats-table tbody tr:last-child td { border-bottom: 0; }
+    .player-tables { display: grid; gap: 12px; margin-top: 14px; }
+    .player-tables h5 { margin: 0 0 6px; color: var(--muted); font-size: 10px; letter-spacing: .07em; text-transform: uppercase; }
+    .player-table-wrap { overflow-x: auto; }
+    .player-table { min-width: 100%; white-space: nowrap; }
+    .stats-unavailable { padding: 16px; border: 1px solid var(--line); background: var(--card); color: var(--muted); }
 
     .empty-game { color: var(--muted); font-family: Georgia, "Times New Roman", serif; font-size: 17px; }
 
@@ -274,6 +346,16 @@
       .updated { max-width: 98px; font-size: 8px; line-height: 1.5; }
     }
 
+    @media (max-width: 640px) {
+      .expanded-score { gap: 8px; padding: 16px 10px; }
+      .expanded-team { gap: 6px; }
+      .expanded-team img { width: 34px; height: 34px; flex-basis: 34px; }
+      .expanded-team-name { font-size: 11px; }
+      .expanded-grid { grid-template-columns: 1fr; }
+      .dialog-content { width: 92vw; padding-top: 16px; }
+      .dialog-header { padding: 12px 4vw; }
+    }
+
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; }
     }
@@ -314,6 +396,19 @@
     <footer class="source">Scores and schedules via <a href="https://www.espn.com/" target="_blank" rel="noreferrer">ESPN</a>.</footer>
   </main>
 
+  <dialog class="game-dialog" id="game-dialog" aria-labelledby="dialog-game-title">
+    <div class="dialog-shell">
+      <header class="dialog-header">
+        <div class="dialog-heading">
+          <h2 id="dialog-game-title"></h2>
+          <p id="dialog-game-subtitle"></p>
+        </div>
+        <button class="dialog-close" id="dialog-close" type="button" aria-label="Close game details">&times;</button>
+      </header>
+      <div class="dialog-content" id="dialog-content"></div>
+    </div>
+  </dialog>
+
   <script>
     const teams = [
       { key: "bills", name: "Buffalo Bills", city: "Buffalo", league: "NFL", sport: "football", leaguePath: "nfl", id: "2" },
@@ -324,9 +419,15 @@
     const scoreboard = document.querySelector("#scoreboard");
     const updated = document.querySelector("#updated");
     const dateLabel = document.querySelector("#selected-date");
+    const gameDialog = document.querySelector("#game-dialog");
+    const dialogTitle = document.querySelector("#dialog-game-title");
+    const dialogSubtitle = document.querySelector("#dialog-game-subtitle");
+    const dialogContent = document.querySelector("#dialog-content");
     let selectedDate = new Date();
     let refreshTimer;
     let latestRequest = 0;
+    let displayedGames = new Map();
+    let activeTeamKey = "";
 
     function dateKey(date) {
       return `${date.getFullYear()}${String(date.getMonth() + 1).padStart(2, "0")}${String(date.getDate()).padStart(2, "0")}`;
@@ -353,7 +454,39 @@
       return new Intl.DateTimeFormat(undefined, { hour: "numeric", minute: "2-digit" }).format(new Date(date));
     }
 
-    function gameInfo(event, teamId) {
+    function getPossession(event, summary) {
+      const situation = event?.competitions?.[0]?.situation
+        || event.situation
+        || summary?.header?.competitions?.[0]?.situation
+        || summary?.situation
+        || {};
+      const possession = situation.possession || situation.possessionTeam || situation.team;
+      if (typeof possession === "string" || typeof possession === "number") {
+        return { id: String(possession), name: situation.possessionText || "" };
+      }
+      return {
+        id: String(possession?.id || possession?.team?.id || situation.possessionId || ""),
+        name: possession?.displayName || possession?.shortDisplayName || possession?.abbreviation || possession?.name || situation.possessionText || ""
+      };
+    }
+
+    function teamHasPossession(event, summary, competitor) {
+      const possession = getPossession(event, summary);
+      const team = competitor?.team || {};
+      return (possession.id && possession.id === String(team.id))
+        || [team.displayName, team.shortDisplayName, team.abbreviation].some(name => name && possession.name.toLowerCase().includes(name.toLowerCase()));
+    }
+
+    function possessionIndicator(hasPossession) {
+      return hasPossession
+        ? `<span class="possession-indicator" aria-label="Has possession">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4.7 16.8C1.7 13.8 4.2 8.1 8.3 4s9.8-6.6 12.8-3.6-0.5 8.7-4.6 12.8-9.8 6.6-12.8 3.6Z" transform="translate(1 3)" stroke="currentColor" stroke-width="1.7"/><path d="m8 15 7-7m-6 2 2 2m1-5 2 2m-7 4 2 2" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+            Ball
+          </span>`
+        : "";
+    }
+
+    function gameInfo(event, teamId, leaguePath) {
       const competition = event.competitions[0];
       const competitors = competition.competitors || [];
       const team = competitors.find(item => item.team?.id === teamId);
@@ -363,7 +496,7 @@
       const isFinal = status.completed === true;
       const kickoff = new Date(event.date);
       const detail = isLive
-        ? [event.status?.period ? `Period ${event.status.period}` : "", event.status?.displayClock].filter(Boolean).join(" · ")
+        ? [event.status?.period ? `${leaguePath === "nfl" ? "Quarter" : "Period"} ${event.status.period}` : "", event.status?.displayClock].filter(Boolean).join(" · ")
         : isFinal
           ? status.shortDetail || "Final"
           : `${team?.homeAway === "home" ? "vs." : "at"} ${formatStart(event.date)}`;
@@ -387,22 +520,23 @@
         ...(game.opponent?.linescores || [])
       ].map(item => item.period).filter(Number.isFinite))].sort((a, b) => a - b);
       const periodPrefix = leaguePath === "nfl" ? "Q" : "P";
+      const periodName = leaguePath === "nfl" ? "Quarter" : "Period";
       const teamsWithScores = [
         { competitor: game.team, name: game.team?.team?.abbreviation || game.team?.team?.shortDisplayName || game.team?.team?.displayName || "Favorite" },
         { competitor: game.opponent, name: game.opponent?.team?.abbreviation || game.opponent?.team?.shortDisplayName || game.opponent?.team?.displayName || "Opponent" }
       ];
       const periodTable = periods.length
         ? `<table class="period-table">
-            <thead><tr><th scope="col">Team</th>${periods.map(period => `<th scope="col">${periodPrefix}${period}</th>`).join("")}</tr></thead>
+            <thead><tr><th scope="col">Team</th>${periods.map(period => `<th scope="col"><abbr title="${periodName} ${period}">${periodPrefix}${period}</abbr></th>`).join("")}</tr></thead>
             <tbody>${teamsWithScores.map(({ competitor, name }) => `<tr>
-              <th scope="row">${name}</th>
+              <th scope="row">${escapeHtml(name)}</th>
               ${periods.map(period => {
                 const lineScore = competitor?.linescores?.find(item => item.period === period);
                 return `<td>${lineScore?.displayValue ?? lineScore?.value ?? "–"}</td>`;
               }).join("")}
             </tr>`).join("")}</tbody>
           </table>`
-        : `<p class="summary-note">Period scores will appear once scoring begins.</p>`;
+        : `<p class="summary-note">${leaguePath === "nfl" ? "Quarter" : "Period"} scores will appear once scoring begins.</p>`;
       const plays = Array.isArray(summary?.scoringPlays)
         ? summary.scoringPlays
         : Array.isArray(summary?.plays)
@@ -416,7 +550,7 @@
               const periodLabel = Number.isFinite(period) ? `${periodPrefix}${period}` : "";
               const clock = play.clock?.displayValue || "";
               const meta = [periodLabel, clock].filter(Boolean).join(" · ");
-              return `<li class="scoring-play"><span class="play-meta">${meta}</span><span>${play.text || play.type?.text || "Scoring play"}</span></li>`;
+              return `<li class="scoring-play"><span class="play-meta">${escapeHtml(meta)}</span><span>${escapeHtml(play.text || play.type?.text || "Scoring play")}</span></li>`;
             }).join("")}</ol>`
           : `<p class="summary-note">${game.isLive ? "No scoring plays yet." : game.isFinal ? "No scoring plays." : "Scoring plays will appear once the game begins."}</p>`;
 
@@ -427,29 +561,277 @@
       </section>`;
     }
 
+    function escapeHtml(value) {
+      return String(value ?? "").replace(/[&<>"']/g, character => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;"
+      })[character]);
+    }
+
+    function teamBoxscore(summary, competitor) {
+      return summary?.boxscore?.teams?.find(item => String(item.team?.id) === String(competitor?.team?.id));
+    }
+
+    function playerBoxscore(summary, competitor) {
+      return summary?.boxscore?.players?.find(item => String(item.team?.id) === String(competitor?.team?.id));
+    }
+
+    function statValue(teamStats, statName) {
+      return teamStats?.statistics?.find(stat => stat.name === statName)?.displayValue ?? "—";
+    }
+
+    function playerStat(group, athlete, key) {
+      const index = group?.keys?.indexOf(key) ?? -1;
+      return index >= 0 ? athlete.stats?.[index] ?? "—" : "—";
+    }
+
+    function numericStat(value) {
+      const parsed = Number.parseFloat(String(value ?? "").replace(/,/g, ""));
+      return Number.isFinite(parsed) ? parsed : 0;
+    }
+
+    function renderComparisonTable(teams, rows) {
+      return `<div class="player-table-wrap"><table class="stats-table">
+        <thead><tr><th scope="col">Stat</th>${teams.map(team => `<th scope="col">${escapeHtml(team.competitor?.team?.abbreviation || team.competitor?.team?.displayName || "Team")}</th>`).join("")}</tr></thead>
+        <tbody>${rows.map(row => `<tr><th scope="row">${escapeHtml(row.label)}</th>${teams.map(team => `<td>${escapeHtml(row.value(team))}</td>`).join("")}</tr>`).join("")}</tbody>
+      </table></div>`;
+    }
+
+    function renderPlayerTable(group, columns, sortKey, limit = 3) {
+      const athletes = [...(group?.athletes || [])]
+        .sort((first, second) => numericStat(playerStat(group, second, sortKey)) - numericStat(playerStat(group, first, sortKey)))
+        .slice(0, limit);
+      if (!athletes.length) return `<p class="summary-note">No player stats available.</p>`;
+      return `<div class="player-table-wrap"><table class="stats-table player-table">
+        <thead><tr><th scope="col">Player</th>${columns.map(column => `<th scope="col">${escapeHtml(column.label)}</th>`).join("")}</tr></thead>
+        <tbody>${athletes.map(athlete => `<tr>
+          <th scope="row">${escapeHtml(athlete.athlete?.displayName || "Player")}</th>
+          ${columns.map(column => `<td>${escapeHtml(playerStat(group, athlete, column.key))}</td>`).join("")}
+        </tr>`).join("")}</tbody>
+      </table></div>`;
+    }
+
+    function renderFootballStats(participants, summary) {
+      const boxes = participants.map(participant => ({
+        ...participant,
+        teamStats: teamBoxscore(summary, participant.competitor),
+        players: playerBoxscore(summary, participant.competitor)
+      }));
+      const teamRows = [
+        { label: "First downs", key: "firstDowns" },
+        { label: "Passing yards", key: "netPassingYards" },
+        { label: "Rushing yards", key: "rushingYards" },
+        { label: "Total yards", key: "totalYards" },
+        { label: "Penalties (count-yards)", key: "totalPenaltiesYards" },
+        { label: "Time of possession", key: "possessionTime" },
+        { label: "Defensive sacks", sacks: true },
+        { label: "Turnovers", key: "turnovers" }
+      ];
+      const teamComparison = renderComparisonTable(boxes, teamRows.map(row => ({
+        label: row.label,
+        value: team => row.sacks
+          ? (() => {
+              const group = team.players?.statistics?.find(item => item.name === "defensive");
+              const index = group?.keys?.indexOf("sacks") ?? -1;
+              return index < 0 ? "—" : (group.athletes || []).reduce((total, athlete) => total + numericStat(athlete.stats?.[index]), 0);
+            })()
+          : statValue(team.teamStats, row.key)
+      })));
+      const leaderColumns = {
+        passing: [
+          { label: "C/ATT", key: "completions/passingAttempts" },
+          { label: "YDS", key: "passingYards" },
+          { label: "TD", key: "passingTouchdowns" },
+          { label: "INT", key: "interceptions" }
+        ],
+        rushing: [
+          { label: "CAR", key: "rushingAttempts" },
+          { label: "YDS", key: "rushingYards" },
+          { label: "AVG", key: "yardsPerRushAttempt" },
+          { label: "TD", key: "rushingTouchdowns" }
+        ],
+        receiving: [
+          { label: "REC", key: "receptions" },
+          { label: "YDS", key: "receivingYards" },
+          { label: "AVG", key: "yardsPerReception" },
+          { label: "TD", key: "receivingTouchdowns" }
+        ],
+        defensive: [
+          { label: "TOT", key: "totalTackles" },
+          { label: "SACKS", key: "sacks" },
+          { label: "TFL", key: "tacklesForLoss" },
+          { label: "PD", key: "passesDefended" }
+        ]
+      };
+      const groups = boxes.map(team => `<section class="expanded-team-panel">
+        <h4>${escapeHtml(team.competitor?.team?.displayName || "Team")}</h4>
+        <div class="player-tables">${Object.entries(leaderColumns).map(([groupName, columns]) => {
+          const group = team.players?.statistics?.find(item => item.name === groupName);
+          const sortKey = groupName === "passing" ? "passingYards" : groupName === "rushing" ? "rushingYards" : groupName === "receiving" ? "receivingYards" : "sacks";
+          const label = groupName === "defensive" ? "Defensive leaders" : `${groupName[0].toUpperCase()}${groupName.slice(1)} leaders`;
+          return `<div><h5>${label}</h5>${renderPlayerTable(group, columns, sortKey)}</div>`;
+        }).join("")}</div>
+      </section>`).join("");
+
+      return `<section class="expanded-section">
+        <h3>Team performance</h3>
+        ${teamComparison}
+      </section>
+      <section class="expanded-section">
+        <h3>Player leaders</h3>
+        <div class="expanded-grid">${groups}</div>
+      </section>`;
+    }
+
+    function sumPlayerStats(players, groupNames, key) {
+      return (players?.statistics || [])
+        .filter(group => groupNames.includes(group.name))
+        .reduce((total, group) => total + (group.athletes || []).reduce((groupTotal, athlete) => groupTotal + numericStat(playerStat(group, athlete, key)), 0), 0);
+    }
+
+    function renderHockeyStats(participants, summary) {
+      const boxes = participants.map(participant => ({
+        ...participant,
+        teamStats: teamBoxscore(summary, participant.competitor),
+        players: playerBoxscore(summary, participant.competitor)
+      }));
+      const teamRows = [
+        { label: "Shots", key: "shotsTotal" },
+        { label: "Hits", key: "hits" },
+        {
+          label: "Shot attempts*",
+          value: team => numericStat(statValue(team.teamStats, "shotsTotal"))
+            + sumPlayerStats(team.players, ["forwards", "defenses"], "shotsMissed")
+            + numericStat(statValue(boxes.find(other => other !== team)?.teamStats, "blockedShots"))
+        },
+        { label: "Power-play goals", key: "powerPlayGoals" },
+        { label: "Power-play opportunities", key: "powerPlayOpportunities" }
+      ];
+      const comparison = renderComparisonTable(boxes, teamRows.map(row => ({
+        label: row.label,
+        value: team => row.value ? row.value(team) : statValue(team.teamStats, row.key)
+      })));
+      const playerPanels = boxes.map(team => {
+        const skaters = ["forwards", "defenses"].flatMap(groupName => {
+          const group = team.players?.statistics?.find(item => item.name === groupName);
+          return (group?.athletes || []).map(athlete => ({ group, athlete }));
+        }).sort((first, second) => numericStat(playerStat(second.group, second.athlete, "timeOnIce")) - numericStat(playerStat(first.group, first.athlete, "timeOnIce")));
+        const skaterRows = skaters.length
+          ? `<div class="player-table-wrap"><table class="stats-table player-table">
+              <thead><tr><th scope="col">Skater</th><th scope="col">G</th><th scope="col">A</th><th scope="col">Shots</th><th scope="col">Hits</th><th scope="col">TOI</th><th scope="col">PP TOI</th></tr></thead>
+              <tbody>${skaters.map(({ group, athlete }) => `<tr>
+                <th scope="row">${escapeHtml(athlete.athlete?.displayName || "Player")}</th>
+                <td>${escapeHtml(playerStat(group, athlete, "goals"))}</td>
+                <td>${escapeHtml(playerStat(group, athlete, "assists"))}</td>
+                <td>${escapeHtml(playerStat(group, athlete, "shotsTotal"))}</td>
+                <td>${escapeHtml(playerStat(group, athlete, "hits"))}</td>
+                <td>${escapeHtml(playerStat(group, athlete, "timeOnIce"))}</td>
+                <td>${escapeHtml(playerStat(group, athlete, "powerPlayTimeOnIce"))}</td>
+              </tr>`).join("")}</tbody>
+            </table></div>`
+          : `<p class="summary-note">No skater stats available.</p>`;
+        const goalies = team.players?.statistics?.find(group => group.name === "goalies");
+        const goalieTable = goalies?.athletes?.length
+          ? `<div class="player-table-wrap"><table class="stats-table player-table">
+              <thead><tr><th scope="col">Goalie</th><th scope="col">Shots against</th><th scope="col">Saves</th><th scope="col">Save %</th><th scope="col">TOI</th></tr></thead>
+              <tbody>${goalies.athletes.map(athlete => `<tr>
+                <th scope="row">${escapeHtml(athlete.athlete?.displayName || "Goalie")}</th>
+                <td>${escapeHtml(playerStat(goalies, athlete, "shotsAgainst"))}</td>
+                <td>${escapeHtml(playerStat(goalies, athlete, "saves"))}</td>
+                <td>${escapeHtml(playerStat(goalies, athlete, "savePct"))}</td>
+                <td>${escapeHtml(playerStat(goalies, athlete, "timeOnIce"))}</td>
+              </tr>`).join("")}</tbody>
+            </table></div>`
+          : `<p class="summary-note">No goalie stats available.</p>`;
+        return `<section class="expanded-team-panel">
+          <h4>${escapeHtml(team.competitor?.team?.displayName || "Team")}</h4>
+          <h5>Skaters</h5>${skaterRows}
+          <h5>Goalies</h5>${goalieTable}
+        </section>`;
+      }).join("");
+      return `<section class="expanded-section">
+        <h3>Team performance</h3>
+        ${comparison}
+        <p class="summary-note">Shot attempts include shots, missed shots, and shots blocked by the opposing team. Power-play time is shown for each skater.</p>
+      </section>
+      <section class="expanded-section">
+        <h3>Player performance</h3>
+        <div class="expanded-grid">${playerPanels}</div>
+      </section>`;
+    }
+
+    function renderExpandedGame(teamConfig, game, summary, summaryUnavailable, event) {
+      const participants = [
+        { competitor: game.team },
+        { competitor: game.opponent }
+      ];
+      const opponentName = game.opponent?.team?.displayName || "Opponent";
+      const teamName = game.team?.team?.displayName || teamConfig.name;
+      const teamHasBall = teamConfig.leaguePath === "nfl" && teamHasPossession(event, summary, game.team);
+      const opponentHasBall = teamConfig.leaguePath === "nfl" && teamHasPossession(event, summary, game.opponent);
+      const scoringSummary = renderScoringSummary(game, summary, teamConfig.leaguePath, summaryUnavailable);
+      const performance = summaryUnavailable
+        ? `<p class="stats-unavailable">Game performance stats are temporarily unavailable.</p>`
+        : !summary?.boxscore
+          ? `<p class="stats-unavailable">Performance stats will appear when the game starts.</p>`
+          : teamConfig.leaguePath === "nfl"
+            ? renderFootballStats(participants, summary)
+            : renderHockeyStats(participants, summary);
+      dialogTitle.textContent = `${teamName} vs. ${opponentName}`;
+      dialogSubtitle.textContent = `${teamConfig.league} · ${game.detail}`;
+      dialogContent.innerHTML = `<section class="expanded-score" aria-label="Game score">
+          <div class="expanded-team">
+            ${game.team?.team?.logo ? `<img src="${escapeHtml(game.team.team.logo)}" alt="">` : ""}
+            <span class="expanded-team-name">${escapeHtml(teamName)} ${possessionIndicator(teamHasBall)}</span>
+            <span class="expanded-score-value">${escapeHtml(game.team?.score ?? "–")}</span>
+          </div>
+          <span class="expanded-score-separator" aria-hidden="true">–</span>
+          <div class="expanded-team">
+            <span class="expanded-score-value">${escapeHtml(game.opponent?.score ?? "–")}</span>
+            <span class="expanded-team-name">${escapeHtml(opponentName)} ${possessionIndicator(opponentHasBall)}</span>
+            ${game.opponent?.team?.logo ? `<img src="${escapeHtml(game.opponent.team.logo)}" alt="">` : ""}
+          </div>
+        </section>
+        <p class="expanded-score-detail">${escapeHtml(game.detail)}</p>
+        ${scoringSummary}
+        ${performance}`;
+      if (!gameDialog.open) gameDialog.showModal();
+    }
+
     function renderCard(teamConfig, events, summaries, summaryUnavailable) {
       const event = gameForTeam(events, teamConfig.id);
-      const game = event ? gameInfo(event, teamConfig.id) : null;
+      const game = event ? gameInfo(event, teamConfig.id, teamConfig.leaguePath) : null;
       const teamLogo = game?.team?.team?.logo || "";
       const statusClass = game?.isLive ? "live" : game?.isFinal ? "final" : "";
       const statusText = game ? (game.isLive ? "Live now" : game.isFinal ? "Final" : "Game day") : "No game";
+      const summary = game ? summaries.get(game.eventId) : null;
+      const teamHasBall = Boolean(game && teamConfig.leaguePath === "nfl" && teamHasPossession(event, summary, game.team));
+      const opponentHasBall = Boolean(game && teamConfig.leaguePath === "nfl" && teamHasPossession(event, summary, game.opponent));
       const gameSummary = game
-        ? renderScoringSummary(game, summaries.get(game.eventId), teamConfig.leaguePath, summaryUnavailable.has(game.eventId))
+        ? renderScoringSummary(game, summary, teamConfig.leaguePath, summaryUnavailable.has(game.eventId))
         : "";
       const matchup = game
         ? `<div class="score-lines">
             <div class="score-line">
               ${game.team?.team?.logo ? `<img class="score-logo" src="${game.team.team.logo}" alt="" loading="lazy">` : ""}
               <span class="score-team-name">${game.team?.team?.displayName || teamConfig.name}</span>
+              ${possessionIndicator(teamHasBall)}
               <span class="score">${game.team?.score ?? "–"}</span>
             </div>
             <div class="score-line">
               ${game.opponent?.team?.logo ? `<img class="score-logo" src="${game.opponent.team.logo}" alt="" loading="lazy">` : ""}
               <span class="score-team-name">${game.opponent?.team?.displayName || "Opponent"}</span>
+              ${possessionIndicator(opponentHasBall)}
               <span class="score">${game.opponent?.score ?? "–"}</span>
             </div>
           </div>
-          <p class="game-detail">${game.detail}${game.isLive ? "" : ` · ${game.location}`}</p>
+          <div class="game-detail-row">
+            <p class="game-detail">${game.detail}${game.isLive ? "" : ` · ${game.location}`}</p>
+            <button class="expand-button" type="button" data-expand-team="${teamConfig.key}" aria-label="Expand ${teamConfig.name} game">Expand game</button>
+          </div>
           ${gameSummary}`
         : `<div class="empty-game">No game on this date.</div>`;
 
@@ -463,6 +845,28 @@
         <div class="card-bottom"><span>${game ? (game.isLive ? "IN PROGRESS" : game.isFinal ? "COMPLETED" : formatDate(game.date)) : "NEXT ON THE SCHEDULE"}</span><span class="record">${game?.record || ""}</span></div>
       </article>`;
     }
+
+    scoreboard.addEventListener("click", event => {
+      const button = event.target.closest("[data-expand-team]");
+      if (!button) return;
+      const gameData = displayedGames.get(button.dataset.expandTeam);
+      if (gameData) {
+        activeTeamKey = button.dataset.expandTeam;
+        renderExpandedGame(...gameData);
+      }
+    });
+
+    document.querySelector("#dialog-close").addEventListener("click", () => {
+      activeTeamKey = "";
+      gameDialog.close();
+    });
+    gameDialog.addEventListener("click", event => {
+      if (event.target === gameDialog) {
+        activeTeamKey = "";
+        gameDialog.close();
+      }
+    });
+    gameDialog.addEventListener("close", () => { activeTeamKey = ""; });
 
     async function loadScores() {
       const requestId = ++latestRequest;
@@ -508,6 +912,18 @@
       }
 
       if (requestId !== latestRequest) return;
+      displayedGames = new Map();
+      for (const team of teams) {
+        const event = gameForTeam(feeds.get(team.leaguePath) || [], team.id);
+        if (!event) continue;
+        const game = gameInfo(event, team.id, team.leaguePath);
+        displayedGames.set(team.key, [team, game, summaries.get(game.eventId), summaryUnavailable.has(game.eventId), event]);
+      }
+      if (gameDialog.open && activeTeamKey) {
+        const currentGame = displayedGames.get(activeTeamKey);
+        if (currentGame) renderExpandedGame(...currentGame);
+        else gameDialog.close();
+      }
       scoreboard.innerHTML = teams.map(team => renderCard(team, feeds.get(team.leaguePath) || [], summaries, summaryUnavailable)).join("");
       const time = new Intl.DateTimeFormat(undefined, { hour: "numeric", minute: "2-digit", second: "2-digit" }).format(new Date());
       updated.textContent = feedFailures === results.length ? "Score feed unavailable" : `${failures ? "Partial update" : "Updated"} ${time}`;

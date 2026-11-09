@@ -230,6 +230,7 @@
     .summary-note { margin: 8px 0 0; color: var(--muted); font-size: 10px; line-height: 1.4; }
     .game-detail-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: 9px; }
     .game-detail-row .game-detail { margin: 0; }
+    .game-actions { display: flex; flex: 0 0 auto; flex-wrap: wrap; gap: 6px; }
     .expand-button, .dialog-close {
       border: 1px solid var(--line);
       border-radius: 3px;
@@ -320,6 +321,66 @@
 
     .error-note { color: var(--red); }
 
+    .view-tabs { display: flex; flex-wrap: wrap; gap: 8px; padding: 18px 0 0; border-bottom: 1px solid var(--line); }
+    .view-tab { padding: 10px 12px; border: 0; border-bottom: 3px solid transparent; background: transparent; color: var(--muted); cursor: pointer; font-size: 11px; font-weight: 700; }
+    .view-tab[aria-selected="true"] { border-bottom-color: var(--red); color: var(--ink); }
+    .view-tab:focus-visible, .select-control:focus-visible, .schedule-team-button:focus-visible, .schedule-filter button:focus-visible, .schedule-game:focus-visible, .schedule-selected button:focus-visible, .sort-button:focus-visible { outline: 2px solid var(--red); outline-offset: 2px; }
+    .content-view { display: none; padding: 20px 0 36px; }
+    .content-view.active { display: block; }
+    .view-heading { display: flex; align-items: end; justify-content: space-between; gap: 16px; margin-bottom: 20px; }
+    .view-heading h2 { margin: 0; font-family: Georgia, "Times New Roman", serif; font-size: clamp(26px, 4vw, 38px); font-weight: 500; }
+    .view-heading p { margin: 6px 0 0; color: var(--muted); font-size: 12px; }
+    .view-controls { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+    .select-control { min-height: 36px; padding: 0 30px 0 10px; border: 1px solid var(--line); border-radius: 3px; background: var(--card); color: var(--ink); font: inherit; font-size: 11px; }
+    .view-status { min-height: 20px; margin: 10px 0; color: var(--muted); font-size: 11px; }
+    .view-status.error-note { color: var(--red); }
+    .season-table-wrap { overflow-x: auto; border: 1px solid var(--line); background: var(--card); }
+    .season-table { width: 100%; border-collapse: collapse; font-size: 12px; font-variant-numeric: tabular-nums; white-space: nowrap; }
+    .season-table th, .season-table td { padding: 10px 9px; border-bottom: 1px solid var(--line); text-align: right; }
+    .season-table thead { color: var(--muted); background: #f5f5ef; }
+    .season-table th:first-child, .season-table td:first-child { text-align: left; }
+    .season-table tbody tr:last-child th, .season-table tbody tr:last-child td { border-bottom: 0; }
+    .season-category { margin-top: 26px; }
+    .season-category h3 { margin: 0 0 14px; font-family: Georgia, "Times New Roman", serif; font-size: 24px; font-weight: 500; }
+    .season-role { margin: 16px 0 22px; }
+    .season-role h4 { margin: 0 0 8px; font-size: 13px; }
+    .sort-button { padding: 0; border: 0; background: transparent; color: inherit; cursor: pointer; font: inherit; font-weight: 700; }
+    .sort-button[aria-sort="ascending"]::after { content: " ↑"; color: var(--red); }
+    .sort-button[aria-sort="descending"]::after { content: " ↓"; color: var(--red); }
+
+    .schedule-team-buttons { display: flex; flex-wrap: wrap; gap: 8px; margin: 18px 0; }
+    .schedule-team-button { display: inline-flex; min-width: 46px; min-height: 42px; align-items: center; justify-content: center; padding: 4px 10px; border: 1px solid var(--line); border-radius: 3px; background: var(--card); color: var(--ink); cursor: pointer; font: inherit; font-size: 11px; font-weight: 700; }
+    .schedule-team-button img { width: 30px; height: 30px; object-fit: contain; }
+    .schedule-team-button[aria-pressed="true"] { border-color: var(--ink); box-shadow: inset 0 0 0 1px var(--ink); }
+    .schedule-toolbar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; margin: 18px 0; }
+    .schedule-nav, .schedule-filter { display: flex; align-items: center; gap: 7px; }
+    .schedule-nav label { color: var(--muted); font-size: 11px; font-weight: 700; }
+    .schedule-filter button { min-height: 34px; padding: 0 10px; border: 1px solid var(--line); border-radius: 3px; background: var(--card); color: var(--ink); cursor: pointer; font-size: 11px; }
+    .schedule-filter button[aria-pressed="true"] { border-color: var(--ink); background: var(--ink); color: var(--card); }
+    .calendar-grid { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); border-top: 1px solid var(--line); border-left: 1px solid var(--line); background: var(--card); }
+    .calendar-weekday, .calendar-day { min-width: 0; padding: 8px; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+    .calendar-weekday { color: var(--muted); font-size: 10px; font-weight: 700; text-align: center; text-transform: uppercase; }
+    .calendar-day { min-height: 115px; }
+    .calendar-day.outside-month { background: #f5f5ef; color: #a4a8a0; }
+    .calendar-day-number { margin-bottom: 6px; font-size: 11px; font-weight: 700; }
+    .calendar-games { display: grid; gap: 4px; }
+    .schedule-game { display: block; width: 100%; overflow: hidden; padding: 5px 6px; border: 0; border-left: 3px solid var(--blue); background: #427a9b12; color: var(--ink); cursor: pointer; font-size: 9px; line-height: 1.35; text-align: left; }
+    .schedule-game.completed { border-left-color: var(--line); background: #7777770d; }
+    .schedule-game:hover { background: #427a9b25; }
+    .schedule-game-matchup { display: block; }
+    .schedule-game-time, .schedule-game-score { display: block; margin-top: 4px; color: var(--muted); font-size: 9px; font-variant-numeric: tabular-nums; }
+    .schedule-game-score { white-space: nowrap; }
+    .calendar-empty { grid-column: 1 / -1; padding: 18px; color: var(--muted); font-size: 12px; text-align: center; }
+    .game-result { display: inline-block; margin-right: 4px; font-size: 9px; font-weight: 800; }
+    .game-result.win { color: var(--green); }
+    .game-result.loss { color: var(--red); }
+    .game-result.ot-loss, .game-result.tie { color: #a77700; }
+    .schedule-selected button { padding: 7px 10px; border: 1px solid var(--line); border-radius: 3px; background: var(--ink); color: var(--card); cursor: pointer; font: inherit; font-size: 11px; font-weight: 700; }
+    .schedule-selected .game-result { font-size: 12px; }
+    .schedule-selected { margin-top: 18px; padding: 16px; border: 1px solid var(--line); background: var(--card); }
+    .schedule-selected h3 { margin: 0 0 7px; font-family: Georgia, "Times New Roman", serif; font-size: 20px; font-weight: 500; }
+    .schedule-selected p { margin: 0 0 10px; color: var(--muted); font-size: 12px; }
+
     @keyframes settle-in {
       from { opacity: 0; transform: translateY(7px); }
       to { opacity: 1; transform: translateY(0); }
@@ -333,6 +394,13 @@
       .team-card { min-height: 0; }
       .team-identity { padding-bottom: 15px; }
       .matchup { min-height: 100px; }
+      .view-heading { align-items: start; flex-direction: column; }
+      .schedule-team-buttons { gap: 6px; }
+      .schedule-team-button { min-width: 42px; min-height: 38px; }
+      .schedule-team-button img { width: 26px; height: 26px; }
+      .calendar-day { min-height: 90px; padding: 5px; }
+      .schedule-game { padding: 4px 3px; font-size: 8px; }
+      .schedule-game-time, .schedule-game-score { font-size: 8px; }
     }
 
     @media (max-width: 460px) {
@@ -344,6 +412,10 @@
       .date-control { gap: 7px; }
       .date-label { min-width: 0; font-size: 10px; }
       .updated { max-width: 98px; font-size: 8px; line-height: 1.5; }
+      .view-tabs { gap: 0; }
+      .view-tab { padding: 10px 8px; font-size: 10px; }
+      .schedule-toolbar { align-items: start; flex-direction: column; }
+      .calendar-day { min-height: 78px; padding: 4px 3px; }
     }
 
     @media (max-width: 640px) {
@@ -376,23 +448,74 @@
       <p class="intro-note">Just your teams, their games, and the score as it moves.</p>
     </section>
 
-    <section class="toolbar" aria-label="Scoreboard date controls">
-      <div class="date-control">
-        <div class="date-arrows">
-          <button class="icon-button" id="previous-day" type="button" aria-label="Previous day" title="Previous day">
-            <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="m10 3-5 5 5 5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </button>
-          <button class="icon-button" id="next-day" type="button" aria-label="Next day" title="Next day">
-            <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="m6 3 5 5-5 5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </button>
+    <nav class="view-tabs" aria-label="Scoreboard views" role="tablist">
+      <button class="view-tab" id="tab-scoreboard" type="button" role="tab" aria-selected="true" aria-controls="view-scoreboard" data-view="scoreboard">Scoreboard</button>
+      <button class="view-tab" id="tab-season" type="button" role="tab" aria-selected="false" aria-controls="view-season" data-view="season">Season totals</button>
+      <button class="view-tab" id="tab-schedule" type="button" role="tab" aria-selected="false" aria-controls="view-schedule" data-view="schedule">Schedule &amp; results</button>
+    </nav>
+
+    <section class="content-view active" id="view-scoreboard" role="tabpanel" aria-labelledby="tab-scoreboard">
+      <div class="toolbar" aria-label="Scoreboard date controls">
+        <div class="date-control">
+          <div class="date-arrows">
+            <button class="icon-button" id="previous-day" type="button" aria-label="Previous day" title="Previous day">
+              <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="m10 3-5 5 5 5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+            <button class="icon-button" id="next-day" type="button" aria-label="Next day" title="Next day">
+              <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="m6 3 5 5-5 5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+          </div>
+          <div class="date-label" id="selected-date" aria-live="polite"></div>
+          <button class="today-button" id="today" type="button">Today</button>
         </div>
-        <div class="date-label" id="selected-date" aria-live="polite"></div>
-        <button class="today-button" id="today" type="button">Today</button>
+        <div class="updated" id="updated" aria-live="polite">Connecting to score feed</div>
       </div>
-      <div class="updated" id="updated" aria-live="polite">Connecting to score feed</div>
+      <section class="scoreboard" id="scoreboard" aria-label="Favorite team scores" aria-live="polite"></section>
     </section>
 
-    <section class="scoreboard" id="scoreboard" aria-label="Favorite team scores" aria-live="polite"></section>
+    <section class="content-view" id="view-season" role="tabpanel" aria-labelledby="tab-season" hidden>
+      <header class="view-heading">
+        <div>
+          <h2>Season totals</h2>
+          <p id="season-label">Player totals for the current season.</p>
+        </div>
+        <div class="view-controls">
+          <label for="stats-team">Team</label>
+          <select class="select-control" id="stats-team">
+            <option value="bills">Buffalo Bills</option>
+            <option value="sabres">Buffalo Sabres</option>
+            <option value="cardinals">Arizona Cardinals</option>
+          </select>
+        </div>
+      </header>
+      <p class="view-status" id="season-status" aria-live="polite">Choose a team to load season stats.</p>
+      <div id="season-player-table"></div>
+    </section>
+
+    <section class="content-view" id="view-schedule" role="tabpanel" aria-labelledby="tab-schedule" hidden>
+      <header class="view-heading">
+        <div>
+          <h2>Schedule &amp; results</h2>
+          <p id="schedule-season-label">Past results and upcoming games in one calendar.</p>
+        </div>
+      </header>
+      <div class="schedule-team-buttons" id="schedule-team-buttons" role="group" aria-label="Choose teams to display"></div>
+      <div class="schedule-toolbar">
+        <div class="schedule-nav">
+          <label for="schedule-month">Month</label>
+          <select class="select-control" id="schedule-month" aria-label="Choose calendar month"></select>
+        </div>
+        <div class="schedule-filter" aria-label="Filter games">
+          <button type="button" data-schedule-filter="all" aria-pressed="true">All dates</button>
+          <button type="button" data-schedule-filter="upcoming" aria-pressed="false">Upcoming</button>
+          <button type="button" data-schedule-filter="past" aria-pressed="false">Results</button>
+        </div>
+      </div>
+      <p class="view-status" id="schedule-status" aria-live="polite">Loading team schedules…</p>
+      <div class="calendar-grid" id="schedule-calendar" role="grid" aria-label="Monthly game calendar"></div>
+      <section class="schedule-selected" id="schedule-selected" aria-live="polite" hidden></section>
+    </section>
+
     <footer class="source">Scores and schedules via <a href="https://www.espn.com/" target="_blank" rel="noreferrer">ESPN</a>.</footer>
   </main>
 
@@ -411,9 +534,9 @@
 
   <script>
     const teams = [
-      { key: "bills", name: "Buffalo Bills", city: "Buffalo", league: "NFL", sport: "football", leaguePath: "nfl", id: "2" },
-      { key: "sabres", name: "Buffalo Sabres", city: "Buffalo", league: "NHL", sport: "hockey", leaguePath: "nhl", id: "2" },
-      { key: "cardinals", name: "Arizona Cardinals", city: "Arizona", league: "NFL", sport: "football", leaguePath: "nfl", id: "22" }
+      { key: "bills", name: "Buffalo Bills", city: "Buffalo", league: "NFL", sport: "football", leaguePath: "nfl", id: "2", logo: "https://a.espncdn.com/i/teamlogos/nfl/500/buf.png" },
+      { key: "sabres", name: "Buffalo Sabres", city: "Buffalo", league: "NHL", sport: "hockey", leaguePath: "nhl", id: "2", logo: "https://a.espncdn.com/i/teamlogos/nhl/500/buf.png" },
+      { key: "cardinals", name: "Arizona Cardinals", city: "Arizona", league: "NFL", sport: "football", leaguePath: "nfl", id: "22", logo: "https://a.espncdn.com/i/teamlogos/nfl/500/ari.png" }
     ];
 
     const scoreboard = document.querySelector("#scoreboard");
@@ -428,9 +551,35 @@
     let latestRequest = 0;
     let displayedGames = new Map();
     let activeTeamKey = "";
+    let scheduleFeeds = new Map();
+    const scheduleLogos = new Map(teams.map(team => [team.key, team.logo]));
+    let scheduleLoadPromise;
+    const currentArizonaDate = arizonaDateParts(new Date());
+    let selectedScheduleMonth = new Date(currentArizonaDate.year, currentArizonaDate.month - 1, 1);
+    let selectedScheduleTeam = "all";
+    let scheduleFilter = "all";
+    let selectedScheduleEvent = "";
+    let pendingScoreboardSelection;
+    let seasonRequestId = 0;
+    const seasonSummaryCache = new Map();
+    const seasonRowsCache = new Map();
+    const seasonRosterCache = new Map();
+    const seasonRosterPromises = new Map();
+    const footballSeasonSorts = new Map();
+    let seasonSort = { key: "", direction: "desc" };
 
     function dateKey(date) {
       return `${date.getFullYear()}${String(date.getMonth() + 1).padStart(2, "0")}${String(date.getDate()).padStart(2, "0")}`;
+    }
+
+    function arizonaDateParts(date) {
+      const parts = new Intl.DateTimeFormat("en-US", {
+        timeZone: "America/Phoenix",
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit"
+      }).formatToParts(new Date(date));
+      return Object.fromEntries(parts.filter(part => part.type !== "literal").map(part => [part.type, Number(part.value)]));
     }
 
     function isToday(date) {
@@ -444,6 +593,23 @@
 
     function setDateLabel() {
       dateLabel.textContent = `${formatDate(selectedDate)} · ${new Intl.DateTimeFormat(undefined, { month: "long", day: "numeric", year: "numeric" }).format(selectedDate)}`;
+    }
+
+    function seasonYearFor(teamConfig, date = new Date()) {
+      const year = date.getFullYear();
+      const month = date.getMonth();
+      if (teamConfig.leaguePath === "nfl") return month >= 7 ? year : year - 1;
+      return month >= 6 ? year + 1 : year;
+    }
+
+    function teamByKey(teamKey) {
+      return teams.find(team => team.key === teamKey);
+    }
+
+    async function fetchJson(url, label) {
+      const response = await fetch(url);
+      if (!response.ok) throw new Error(`${label} returned ${response.status}`);
+      return response.json();
     }
 
     function gameForTeam(events, teamId) {
@@ -836,10 +1002,16 @@
           </div>
           <div class="game-detail-row">
             <p class="game-detail">${game.detail}${game.isLive ? "" : ` · ${game.location}`}</p>
-            <button class="expand-button" type="button" data-expand-team="${teamConfig.key}" aria-label="Expand ${teamConfig.name} game">Expand game</button>
+            <div class="game-actions">
+              <button class="expand-button" type="button" data-expand-team="${teamConfig.key}" aria-label="Expand ${teamConfig.name} game">Expand game</button>
+              <button class="expand-button" type="button" data-season-team="${teamConfig.key}" aria-label="View ${teamConfig.name} season totals">Season totals</button>
+            </div>
           </div>
           ${gameSummary}`
-        : `<div class="empty-game">No game on this date.</div>`;
+        : `<div class="game-detail-row">
+            <p class="empty-game">No game on this date.</p>
+            <button class="expand-button" type="button" data-season-team="${teamConfig.key}" aria-label="View ${teamConfig.name} season totals">Season totals</button>
+          </div>`;
 
       return `<article class="team-card" data-team="${teamConfig.key}">
         <div class="card-top"><span class="league">${teamConfig.league} / ${teamConfig.city}</span><span class="status ${statusClass}">${statusText}</span></div>
@@ -852,7 +1024,909 @@
       </article>`;
     }
 
+    function scheduleStatus(event) {
+      return event.competitions?.[0]?.status?.type || {};
+    }
+
+    function isCompletedGame(event) {
+      const status = scheduleStatus(event);
+      return status.completed === true || status.state === "post";
+    }
+
+    function isUpcomingGame(event) {
+      return scheduleStatus(event).state === "pre";
+    }
+
+    function eventDateKey(event) {
+      const { year, month, day } = arizonaDateParts(event.date);
+      return `${year}${String(month).padStart(2, "0")}${String(day).padStart(2, "0")}`;
+    }
+
+    function formatScheduleDate(date, options = { weekday: "short", month: "short", day: "numeric" }) {
+      return new Intl.DateTimeFormat(undefined, { ...options, timeZone: "America/Phoenix" }).format(new Date(date));
+    }
+
+    function formatScheduleTime(date) {
+      return new Intl.DateTimeFormat(undefined, {
+        hour: "numeric",
+        minute: "2-digit",
+        timeZone: "America/Phoenix",
+        timeZoneName: "short"
+      }).format(new Date(date));
+    }
+
+    function scheduleMatchup(event, teamConfig) {
+      const competitors = event.competitions?.[0]?.competitors || [];
+      const favorite = competitors.find(item => String(item.team?.id) === teamConfig.id);
+      const opponent = competitors.find(item => String(item.team?.id) !== teamConfig.id);
+      const home = competitors.find(item => item.homeAway === "home");
+      const away = competitors.find(item => item.homeAway === "away");
+      const awayName = away?.team?.displayName || away?.team?.shortDisplayName || "Away team";
+      const homeName = home?.team?.displayName || home?.team?.shortDisplayName || "Home team";
+      const favoriteScore = Number(favorite?.score?.value ?? favorite?.score?.displayValue ?? favorite?.score);
+      const opponentScore = Number(opponent?.score?.value ?? opponent?.score?.displayValue ?? opponent?.score);
+      const outcome = scheduleOutcome(event, teamConfig, favorite, opponent);
+      return {
+        favorite,
+        opponent,
+        away,
+        home,
+        label: `${awayName} at ${homeName}`,
+        score: isCompletedGame(event) && Number.isFinite(favoriteScore) && Number.isFinite(opponentScore)
+          ? `${away?.score?.displayValue ?? away?.score ?? "–"}–${home?.score?.displayValue ?? home?.score ?? "–"}`
+          : "",
+        outcome
+      };
+    }
+
+    function scheduleOutcome(event, teamConfig, favorite, opponent) {
+      if (!isCompletedGame(event)) return null;
+      const favoriteScore = Number(favorite?.score?.value ?? favorite?.score?.displayValue ?? favorite?.score);
+      const opponentScore = Number(opponent?.score?.value ?? opponent?.score?.displayValue ?? opponent?.score);
+      if (!Number.isFinite(favoriteScore) || !Number.isFinite(opponentScore)) return null;
+      if (favoriteScore === opponentScore) return teamConfig.leaguePath === "nhl" ? null : { label: "D", className: "tie", text: "Tie" };
+      const won = favorite?.winner === true || (favorite?.winner !== false && favoriteScore > opponentScore);
+      if (won) return { label: "W", className: "win", text: "Win" };
+      const detail = [
+        scheduleStatus(event).detail,
+        scheduleStatus(event).shortDetail,
+        scheduleStatus(event).altDetail,
+        event.status?.type?.detail,
+        event.status?.type?.shortDetail,
+        event.status?.type?.altDetail
+      ].filter(Boolean).join(" ");
+      if (teamConfig.leaguePath === "nhl" && /\b(?:OT|SO)\b|overtime|shootout/i.test(detail)) {
+        return { label: "OTL", className: "ot-loss", text: "Overtime loss" };
+      }
+      return { label: "L", className: "loss", text: "Loss" };
+    }
+
+    async function loadSchedules() {
+      if (scheduleLoadPromise) return scheduleLoadPromise;
+      const status = document.querySelector("#schedule-status");
+      status.textContent = "Loading current-season team schedules…";
+      status.classList.remove("error-note");
+      const pending = Promise.allSettled(teams.map(async team => {
+        const season = seasonYearFor(team);
+        const url = `https://site.api.espn.com/apis/site/v2/sports/${team.sport}/${team.leaguePath}/teams/${team.id}/schedule?season=${season}&seasontype=2`;
+        return [team.key, await fetchJson(url, `${team.league} schedule`)];
+      })).then(results => {
+        let failures = 0;
+        const failureMessages = [];
+        for (const result of results) {
+          if (result.status === "fulfilled") scheduleFeeds.set(...result.value);
+          else {
+            failures++;
+            failureMessages.push(result.reason?.message || "Schedule request failed");
+          }
+        }
+        const names = [...scheduleFeeds.values()].map(feed => feed.season?.displayName).filter(Boolean);
+        document.querySelector("#schedule-season-label").textContent = `Past results and upcoming games · ${[...new Set(names)].join(" / ") || "current seasons"}.`;
+        renderScheduleTeamButtons();
+        if (failures) {
+          status.textContent = `${failures} team schedule${failures === 1 ? "" : "s"} could not load (${failureMessages[0]}). Available schedules are shown; try opening this view again to retry.`;
+          status.classList.add("error-note");
+          scheduleLoadPromise = null;
+        } else {
+          status.textContent = "Schedules and results loaded.";
+        }
+        return failures;
+      });
+      scheduleLoadPromise = pending;
+      return pending;
+    }
+
+    function renderScheduleTeamButtons() {
+      const container = document.querySelector("#schedule-team-buttons");
+      container.innerHTML = `${teams.map(team => {
+        const logo = scheduleLogos.get(team.key);
+        return `<button class="schedule-team-button" type="button" data-schedule-team="${team.key}" aria-label="Show ${escapeHtml(team.name)} schedule" aria-pressed="${selectedScheduleTeam === team.key}">
+          ${logo ? `<img src="${escapeHtml(logo)}" alt="" loading="lazy">` : escapeHtml(team.league)}
+        </button>`;
+      }).join("")}
+        <button class="schedule-team-button" type="button" data-schedule-team="all" aria-label="Show all favorite teams" aria-pressed="${selectedScheduleTeam === "all"}">All</button>`;
+    }
+
+    function getScheduleEvents() {
+      const entries = new Map();
+      const selectedTeams = selectedScheduleTeam === "all" ? teams : [teamByKey(selectedScheduleTeam)].filter(Boolean);
+      for (const team of selectedTeams) {
+        const feed = scheduleFeeds.get(team.key);
+        for (const event of feed?.events || []) {
+          if (!event.date || !event.competitions?.[0]?.competitors) continue;
+          entries.set(event.id, { event, team });
+        }
+      }
+      return [...entries.values()].sort((first, second) => new Date(first.event.date) - new Date(second.event.date));
+    }
+
+    function renderScheduleMonthOptions() {
+      const select = document.querySelector("#schedule-month");
+      const months = [...new Set(getScheduleEvents().map(({ event }) => eventDateKey(event).slice(0, 6)))].sort();
+      const currentMonthKey = `${selectedScheduleMonth.getFullYear()}${String(selectedScheduleMonth.getMonth() + 1).padStart(2, "0")}`;
+      if (months.length && !months.includes(currentMonthKey)) {
+        const currentKey = `${currentArizonaDate.year}${String(currentArizonaDate.month).padStart(2, "0")}`;
+        selectedScheduleMonth = new Date(
+          ...(months.includes(currentKey) ? [currentArizonaDate.year, currentArizonaDate.month - 1, 1] : [
+            Number(months[0].slice(0, 4)),
+            Number(months[0].slice(4, 6)) - 1,
+            1
+          ])
+        );
+      }
+      select.innerHTML = months.map(month => {
+        const year = Number(month.slice(0, 4));
+        const monthNumber = Number(month.slice(4, 6));
+        const label = new Intl.DateTimeFormat(undefined, { month: "long", year: "numeric" }).format(new Date(year, monthNumber - 1, 1));
+        return `<option value="${month}"${month === currentMonthKeyForSelection() ? " selected" : ""}>${escapeHtml(label)}</option>`;
+      }).join("");
+      select.disabled = months.length === 0;
+    }
+
+    function currentMonthKeyForSelection() {
+      return `${selectedScheduleMonth.getFullYear()}${String(selectedScheduleMonth.getMonth() + 1).padStart(2, "0")}`;
+    }
+
+    function selectedMonthEntries() {
+      const monthKey = currentMonthKeyForSelection();
+      return getScheduleEvents().filter(({ event }) => {
+        const statusMatches = scheduleFilter === "all"
+          || scheduleFilter === "past" && isCompletedGame(event)
+          || scheduleFilter === "upcoming" && isUpcomingGame(event);
+        return statusMatches && eventDateKey(event).startsWith(monthKey);
+      });
+    }
+
+    function renderScheduleSelection(entry) {
+      const selected = document.querySelector("#schedule-selected");
+      if (!entry) {
+        selected.hidden = true;
+        selected.innerHTML = "";
+        return;
+      }
+      const { event, team } = entry;
+      const match = scheduleMatchup(event, team);
+      const completed = isCompletedGame(event);
+      const status = scheduleStatus(event);
+      const live = status.state === "in";
+      const when = completed
+        ? status.shortDetail || "Final"
+        : live
+          ? status.shortDetail || "In progress"
+          : `${formatScheduleDate(event.date, { weekday: "long", month: "long", day: "numeric" })} · ${formatScheduleTime(event.date)}`;
+      const result = match.outcome
+        ? `<span class="game-result ${match.outcome.className}" aria-label="${match.outcome.text}">${match.outcome.label}</span>`
+        : "";
+      selected.innerHTML = `<h3>${escapeHtml(match.label)}</h3>
+        <p>${result ? `${result} ` : ""}${escapeHtml(when)}${match.score ? ` · ${escapeHtml(match.score)}` : ""}${team.league ? ` · ${escapeHtml(team.league)}` : ""}</p>
+        <button type="button" data-scoreboard-event="${escapeHtml(event.id)}" data-scoreboard-team="${team.key}" data-scoreboard-date="${eventDateKey(event)}">${completed ? "Open box score on scoreboard" : "View game on scoreboard"}</button>`;
+      selected.hidden = false;
+    }
+
+    function renderSchedule() {
+      const calendar = document.querySelector("#schedule-calendar");
+      renderScheduleTeamButtons();
+      renderScheduleMonthOptions();
+      calendar.innerHTML = "";
+      const weekdayNames = Array.from({ length: 7 }, (_, index) => {
+        const day = new Date(2024, 0, index + 7);
+        return `<div class="calendar-weekday" role="columnheader">${new Intl.DateTimeFormat(undefined, { weekday: "short" }).format(day)}</div>`;
+      });
+      const firstOfMonth = new Date(selectedScheduleMonth.getFullYear(), selectedScheduleMonth.getMonth(), 1);
+      const startOffset = firstOfMonth.getDay();
+      const daysInMonth = new Date(selectedScheduleMonth.getFullYear(), selectedScheduleMonth.getMonth() + 1, 0).getDate();
+      const cellCount = Math.ceil((startOffset + daysInMonth) / 7) * 7;
+      const firstCell = new Date(selectedScheduleMonth.getFullYear(), selectedScheduleMonth.getMonth(), 1 - startOffset);
+      const entries = selectedMonthEntries();
+      const byDay = new Map();
+      for (const entry of entries) {
+        const key = eventDateKey(entry.event);
+        if (!byDay.has(key)) byDay.set(key, []);
+        byDay.get(key).push(entry);
+      }
+      const days = Array.from({ length: cellCount }, (_, index) => {
+        const date = new Date(firstCell.getFullYear(), firstCell.getMonth(), firstCell.getDate() + index);
+        const dateKeyValue = `${date.getFullYear()}${String(date.getMonth() + 1).padStart(2, "0")}${String(date.getDate()).padStart(2, "0")}`;
+        const games = byDay.get(dateKeyValue) || [];
+        return `<div class="calendar-day${date.getMonth() === selectedScheduleMonth.getMonth() ? "" : " outside-month"}" role="gridcell">
+          <div class="calendar-day-number">${date.getDate()}</div>
+          <div class="calendar-games">${games.map(({ event, team }) => {
+            const matchup = scheduleMatchup(event, team);
+            const completed = isCompletedGame(event);
+            const status = scheduleStatus(event);
+            const live = status.state === "in";
+            const result = matchup.outcome
+              ? `<span class="game-result ${matchup.outcome.className}" aria-label="${matchup.outcome.text}">${matchup.outcome.label}</span>`
+              : "";
+            const meta = completed
+              ? `${result}${matchup.score ? ` ${escapeHtml(matchup.score)}` : ""}`
+              : live
+                ? escapeHtml(status.shortDetail || "In progress")
+                : escapeHtml(formatScheduleTime(event.date));
+            const teamNames = matchup.label;
+            return `<button class="schedule-game${completed ? " completed" : ""}" type="button" data-schedule-event="${escapeHtml(event.id)}" aria-label="${escapeHtml(`${team.name}: ${teamNames}, ${completed ? (matchup.outcome?.text || "Final") : meta}`)}">
+              <span class="schedule-game-matchup">${escapeHtml(teamNames)}</span>
+              <span class="${completed ? "schedule-game-score" : "schedule-game-time"}">${meta}</span>
+            </button>`;
+          }).join("")}</div>
+        </div>`;
+      });
+      calendar.innerHTML = [...weekdayNames, ...days, ...(entries.length ? [] : [`<p class="calendar-empty">No ${scheduleFilter === "all" ? "" : `${scheduleFilter} `}games this month.</p>`])].join("");
+      const eventsById = new Map(entries.map(entry => [String(entry.event.id), entry]));
+      const selectedEntry = eventsById.get(selectedScheduleEvent);
+      if (selectedEntry) renderScheduleSelection(selectedEntry);
+      else if (selectedScheduleEvent) renderScheduleSelection(null);
+    }
+
+    async function openScheduleView() {
+      const failureCount = await loadSchedules();
+      renderSchedule();
+      if (!failureCount && !getScheduleEvents().length) {
+        document.querySelector("#schedule-status").textContent = "No games were returned for the selected seasons.";
+      }
+    }
+
+    const defensiveFootballPositions = new Set(["CB", "DB", "DE", "DL", "DT", "EDGE", "FS", "ILB", "LB", "MLB", "NT", "OLB", "S", "SS"]);
+    const footballRoleGroups = [
+      {
+        key: "offense-qb", category: "Offense", label: "Quarterbacks", positions: ["QB"], statGroups: ["passing", "rushing", "fumbles"], defaultSort: "passYards",
+        columns: [
+          { key: "games", label: "GP" },
+          { key: "passCompletions", label: "C/ATT", text: true, ratio: ["passCompletions", "passAttempts"], sortKey: "passYards" },
+          { key: "passYards", label: "Pass YDS" },
+          { key: "passTD", label: "Pass TD" },
+          { key: "passINT", label: "INT" },
+          { key: "sacksTaken", label: "Sacks" },
+          { key: "rushAttempts", label: "Rush ATT" },
+          { key: "rushYards", label: "Rush YDS" },
+          { key: "rushTD", label: "Rush TD" },
+          { key: "fumblesLost", label: "FUM LOST" }
+        ]
+      },
+      {
+        key: "offense-wr", category: "Offense", label: "Wide receivers", positions: ["WR"], statGroups: ["receiving", "fumbles"], defaultSort: "receivingYards",
+        columns: [
+          { key: "games", label: "GP" },
+          { key: "receptions", label: "REC" },
+          { key: "receivingTargets", label: "TGTS" },
+          { key: "receivingYards", label: "Rec YDS" },
+          { key: "receivingTD", label: "Rec TD" },
+          { key: "longReception", label: "LONG" },
+          { key: "fumblesLost", label: "FUM LOST" }
+        ]
+      },
+      {
+        key: "offense-te", category: "Offense", label: "Tight ends", positions: ["TE"], statGroups: ["receiving", "fumbles"], defaultSort: "receivingYards",
+        columns: [
+          { key: "games", label: "GP" },
+          { key: "receptions", label: "REC" },
+          { key: "receivingTargets", label: "TGTS" },
+          { key: "receivingYards", label: "Rec YDS" },
+          { key: "receivingTD", label: "Rec TD" },
+          { key: "longReception", label: "LONG" },
+          { key: "fumblesLost", label: "FUM LOST" }
+        ]
+      },
+      {
+        key: "offense-rb", category: "Offense", label: "Running backs", positions: ["RB"], statGroups: ["rushing", "receiving", "fumbles"], defaultSort: "rushYards",
+        columns: [
+          { key: "games", label: "GP" },
+          { key: "rushAttempts", label: "CAR" },
+          { key: "rushYards", label: "Rush YDS" },
+          { key: "rushTD", label: "Rush TD" },
+          { key: "receptions", label: "REC" },
+          { key: "receivingTargets", label: "TGTS" },
+          { key: "receivingYards", label: "Rec YDS" },
+          { key: "receivingTD", label: "Rec TD" },
+          { key: "fumblesLost", label: "FUM LOST" }
+        ]
+      },
+      {
+        key: "offense-fb", category: "Offense", label: "Fullbacks", positions: ["FB"], statGroups: ["rushing", "receiving", "fumbles"], defaultSort: "rushYards",
+        columns: [
+          { key: "games", label: "GP" },
+          { key: "rushAttempts", label: "CAR" },
+          { key: "rushYards", label: "Rush YDS" },
+          { key: "rushTD", label: "Rush TD" },
+          { key: "receptions", label: "REC" },
+          { key: "receivingTargets", label: "TGTS" },
+          { key: "receivingYards", label: "Rec YDS" },
+          { key: "receivingTD", label: "Rec TD" },
+          { key: "fumblesLost", label: "FUM LOST" }
+        ]
+      },
+      {
+        key: "defense", category: "Defense", label: "Defense", positions: [], statGroups: ["defensive", "interceptions", "fumbles"], defaultSort: "totalTackles",
+        columns: [
+          { key: "games", label: "GP" },
+          { key: "totalTackles", label: "TOT" },
+          { key: "soloTackles", label: "SOLO" },
+          { key: "sacks", label: "SACKS" },
+          { key: "tacklesForLoss", label: "TFL" },
+          { key: "passesDefended", label: "PD" },
+          { key: "QBHits", label: "QB HITS" },
+          { key: "interceptions", label: "INT" },
+          { key: "interceptionYards", label: "INT YDS" },
+          { key: "interceptionTouchdowns", label: "INT TD" },
+          { key: "fumbles", label: "FUM" },
+          { key: "fumblesRecovered", label: "FUM REC" }
+        ]
+      },
+      {
+        key: "special-kicker", category: "Special Teams", label: "Kickers", positions: ["K"], statGroups: ["kicking"], defaultSort: "kickingPoints",
+        columns: [
+          { key: "games", label: "GP" },
+          { key: "fieldGoalsMade", label: "FG M/A", text: true, ratio: ["fieldGoalsMade", "fieldGoalsAttempted"], sortKey: "fieldGoalsMade" },
+          { key: "fieldGoalPct", label: "FG%", computedPercent: ["fieldGoalsMade", "fieldGoalsAttempted"] },
+          { key: "longFieldGoal", label: "LONG FG" },
+          { key: "extraPointsMade", label: "XP M/A", text: true, ratio: ["extraPointsMade", "extraPointsAttempted"], sortKey: "extraPointsMade" },
+          { key: "kickingPoints", label: "PTS" }
+        ]
+      },
+      {
+        key: "special-punter", category: "Special Teams", label: "Punters", positions: ["P"], statGroups: ["punting"], defaultSort: "punts",
+        columns: [
+          { key: "games", label: "GP" },
+          { key: "punts", label: "PUNTS" },
+          { key: "puntYards", label: "YDS" },
+          { key: "grossAvgPuntYards", label: "AVG", computedRate: ["puntYards", "punts"] },
+          { key: "touchbacks", label: "TB" },
+          { key: "puntsInside20", label: "IN 20" },
+          { key: "longPunt", label: "LONG" }
+        ]
+      },
+      {
+        key: "special-kick-returner", category: "Special Teams", label: "Kick returners", positions: [], statGroups: ["kickReturns"], defaultSort: "kickReturnYards",
+        columns: [
+          { key: "games", label: "GP" },
+          { key: "kickReturns", label: "RET" },
+          { key: "kickReturnYards", label: "YDS" },
+          { key: "kickReturnAverage", label: "AVG", computedRate: ["kickReturnYards", "kickReturns"] },
+          { key: "longKickReturn", label: "LONG" },
+          { key: "kickReturnTouchdowns", label: "TD" }
+        ]
+      },
+      {
+        key: "special-punt-returner", category: "Special Teams", label: "Punt returners", positions: [], statGroups: ["puntReturns"], defaultSort: "puntReturnYards",
+        columns: [
+          { key: "games", label: "GP" },
+          { key: "puntReturns", label: "RET" },
+          { key: "puntReturnYards", label: "YDS" },
+          { key: "puntReturnAverage", label: "AVG", computedRate: ["puntReturnYards", "puntReturns"] },
+          { key: "longPuntReturn", label: "LONG" },
+          { key: "puntReturnTouchdowns", label: "TD" }
+        ]
+      }
+    ];
+
+    function seasonColumns(team) {
+      return [
+        { key: "player", label: "Player", text: true },
+        { key: "position", label: "Pos", text: true },
+        { key: "games", label: "GP" },
+        { key: "goals", label: "G" },
+        { key: "assists", label: "A" },
+        { key: "points", label: "PTS" },
+        { key: "shots", label: "Shots" },
+        { key: "hits", label: "Hits" },
+        { key: "timeOnIce", sortKey: "timeOnIceSeconds", label: "TOI", duration: true },
+        { key: "goalsAgainst", label: "GA" },
+        { key: "shotsAgainst", label: "SA" },
+        { key: "saves", label: "Saves" },
+        { key: "savePct", label: "SV%", percentage: true }
+      ];
+    }
+
+    function seasonAggregateKey(team) {
+      return `${team.key}-${seasonYearFor(team)}`;
+    }
+
+    async function loadTeamRoster(team) {
+      const seasonKey = seasonAggregateKey(team);
+      if (seasonRosterCache.has(seasonKey)) return seasonRosterCache.get(seasonKey);
+      if (seasonRosterPromises.has(seasonKey)) return seasonRosterPromises.get(seasonKey);
+      const url = `https://site.api.espn.com/apis/site/v2/sports/${team.sport}/${team.leaguePath}/teams/${team.id}/roster?season=${seasonYearFor(team)}`;
+      const pending = fetchJson(url, `${team.league} roster`)
+        .then(roster => {
+          seasonRosterCache.set(seasonKey, roster);
+          seasonRosterPromises.delete(seasonKey);
+          return roster;
+        })
+        .catch(error => {
+          seasonRosterPromises.delete(seasonKey);
+          throw error;
+        });
+      seasonRosterPromises.set(seasonKey, pending);
+      return pending;
+    }
+
+    function durationSeconds(value) {
+      const parts = String(value || "").split(":").map(Number);
+      if (parts.length !== 2 || parts.some(part => !Number.isFinite(part))) return 0;
+      return parts[0] * 60 + parts[1];
+    }
+
+    function formatDuration(seconds) {
+      const minutes = Math.floor(seconds / 60);
+      return `${minutes}:${String(Math.round(seconds % 60)).padStart(2, "0")}`;
+    }
+
+    function footballRoleForStat(groupName, position, rosterGroup) {
+      const isDefender = rosterGroup === "defense" || defensiveFootballPositions.has(position);
+      if (groupName === "passing" && position === "QB") return "offense-qb";
+      if (groupName === "rushing" && ["QB", "RB", "FB"].includes(position)) return `offense-${position.toLowerCase()}`;
+      if (groupName === "receiving" && ["WR", "TE", "RB", "FB"].includes(position)) return `offense-${position.toLowerCase()}`;
+      if (["defensive", "interceptions"].includes(groupName) && isDefender) return "defense";
+      if (groupName === "fumbles") {
+        if (["QB", "RB", "FB", "WR", "TE"].includes(position)) return `offense-${position.toLowerCase()}`;
+        if (isDefender) return "defense";
+      }
+      if (groupName === "kicking") return "special-kicker";
+      if (groupName === "punting") return "special-punter";
+      if (groupName === "kickReturns") return "special-kick-returner";
+      if (groupName === "puntReturns") return "special-punt-returner";
+      return "";
+    }
+
+    function accumulateFootballStat(values, mapping, rawValue) {
+      if (mapping.type === "ratio") {
+        const [numerator, denominator] = String(rawValue || "").split(mapping.separator || "/").map(numericStat);
+        values[mapping.numerator] = (values[mapping.numerator] || 0) + numerator;
+        values[mapping.denominator] = (values[mapping.denominator] || 0) + denominator;
+        return;
+      }
+      const parsed = numericStat(rawValue);
+      if (mapping.type === "max") values[mapping.target] = Math.max(values[mapping.target] || 0, parsed);
+      else values[mapping.target] = (values[mapping.target] || 0) + parsed;
+    }
+
+    function createFootballSeasonRows(team, summariesByEvent, rosterFeed) {
+      const playerTables = new Map(footballRoleGroups.map(group => [group.key, new Map()]));
+      const rosterPositions = new Map();
+      const rosterGroups = new Map();
+      for (const rosterGroup of rosterFeed.athletes || []) {
+        for (const athlete of rosterGroup.items || []) {
+          rosterPositions.set(String(athlete.id), athlete.position?.abbreviation || "");
+          rosterGroups.set(String(athlete.id), rosterGroup.position || "");
+        }
+      }
+      const statMappings = {
+        passing: {
+          "completions/passingAttempts": { type: "ratio", numerator: "passCompletions", denominator: "passAttempts" },
+          passingYards: { target: "passYards" },
+          passingTouchdowns: { target: "passTD" },
+          interceptions: { target: "passINT" },
+          "sacks-sackYardsLost": { type: "ratio", separator: "-", numerator: "sacksTaken", denominator: "sackYardsLost" }
+        },
+        rushing: {
+          rushingAttempts: { target: "rushAttempts" },
+          rushingYards: { target: "rushYards" },
+          rushingTouchdowns: { target: "rushTD" }
+        },
+        receiving: {
+          receptions: { target: "receptions" },
+          receivingTargets: { target: "receivingTargets" },
+          receivingYards: { target: "receivingYards" },
+          receivingTouchdowns: { target: "receivingTD" },
+          longReception: { target: "longReception", type: "max" }
+        },
+        defensive: {
+          totalTackles: { target: "totalTackles" },
+          soloTackles: { target: "soloTackles" },
+          sacks: { target: "sacks" },
+          tacklesForLoss: { target: "tacklesForLoss" },
+          passesDefended: { target: "passesDefended" },
+          QBHits: { target: "QBHits" }
+        },
+        interceptions: {
+          interceptions: { target: "interceptions" },
+          interceptionYards: { target: "interceptionYards" },
+          interceptionTouchdowns: { target: "interceptionTouchdowns" }
+        },
+        fumbles: {
+          fumbles: { target: "fumbles" },
+          fumblesLost: { target: "fumblesLost" },
+          fumblesRecovered: { target: "fumblesRecovered" }
+        },
+        kicking: {
+          "fieldGoalsMade/fieldGoalAttempts": { type: "ratio", numerator: "fieldGoalsMade", denominator: "fieldGoalsAttempted" },
+          longFieldGoalMade: { target: "longFieldGoal", type: "max" },
+          "extraPointsMade/extraPointAttempts": { type: "ratio", numerator: "extraPointsMade", denominator: "extraPointsAttempted" },
+          totalKickingPoints: { target: "kickingPoints" }
+        },
+        punting: {
+          punts: { target: "punts" },
+          puntYards: { target: "puntYards" },
+          touchbacks: { target: "touchbacks" },
+          puntsInside20: { target: "puntsInside20" },
+          longPunt: { target: "longPunt", type: "max" }
+        },
+        kickReturns: {
+          kickReturns: { target: "kickReturns" },
+          kickReturnYards: { target: "kickReturnYards" },
+          longKickReturn: { target: "longKickReturn", type: "max" },
+          kickReturnTouchdowns: { target: "kickReturnTouchdowns" }
+        },
+        puntReturns: {
+          puntReturns: { target: "puntReturns" },
+          puntReturnYards: { target: "puntReturnYards" },
+          longPuntReturn: { target: "longPuntReturn", type: "max" },
+          puntReturnTouchdowns: { target: "puntReturnTouchdowns" }
+        }
+      };
+
+      for (const [eventId, summary] of summariesByEvent) {
+        const teamPlayers = playerBoxscore(summary, { team: { id: team.id } });
+        if (!teamPlayers) continue;
+        for (const group of teamPlayers.statistics || []) {
+          const mappings = statMappings[group.name];
+          if (!mappings) continue;
+          for (const athlete of group.athletes || []) {
+            const playerId = athlete.athlete?.id;
+            if (!playerId) continue;
+            const position = rosterPositions.get(String(playerId)) || "";
+            const rosterGroup = rosterGroups.get(String(playerId)) || "";
+            const roleKey = footballRoleForStat(group.name, position, rosterGroup);
+            const roleDefinition = footballRoleGroups.find(role => role.key === roleKey);
+            if (!roleDefinition || !roleDefinition.statGroups.includes(group.name)) continue;
+            const sourceIndexes = Object.keys(mappings).map(sourceKey => [sourceKey, group.keys?.indexOf(sourceKey) ?? -1]);
+            if (!playerTables.get(roleKey).has(playerId)) {
+              playerTables.get(roleKey).set(playerId, {
+                player: athlete.athlete?.displayName || athlete.athlete?.fullName || "",
+                position,
+                games: new Set(),
+                values: {}
+              });
+            }
+            const player = playerTables.get(roleKey).get(playerId);
+            let appeared = false;
+            for (const [sourceKey, index] of sourceIndexes) {
+              if (index < 0) continue;
+              const rawValue = athlete.stats?.[index];
+              if (numericStat(rawValue) > 0) appeared = true;
+              accumulateFootballStat(player.values, mappings[sourceKey], rawValue);
+            }
+            if (appeared) player.games.add(eventId);
+          }
+        }
+      }
+
+      return footballRoleGroups.map(group => ({
+        ...group,
+        rows: [...playerTables.get(group.key).values()]
+          .filter(player => player.games.size > 0)
+          .map(player => ({ player: player.player, position: player.position, games: player.games.size, ...player.values }))
+      }));
+    }
+
+    function createSeasonRows(team, summariesByEvent, rosterFeed) {
+      if (team.leaguePath === "nfl") return createFootballSeasonRows(team, summariesByEvent, rosterFeed);
+      const players = new Map();
+      const hockeyMappings = {
+        forwards: { goals: "goals", assists: "assists", shotsTotal: "shots", hits: "hits", timeOnIce: "timeOnIce" },
+        defenses: { goals: "goals", assists: "assists", shotsTotal: "shots", hits: "hits", timeOnIce: "timeOnIce" },
+        goalies: { goalsAgainst: "goalsAgainst", shotsAgainst: "shotsAgainst", saves: "saves", timeOnIce: "timeOnIce" }
+      };
+      for (const [eventId, summary] of summariesByEvent) {
+        const teamPlayers = playerBoxscore(summary, { team: { id: team.id } });
+        if (!teamPlayers) continue;
+        for (const group of teamPlayers.statistics || []) {
+          const mappings = hockeyMappings[group.name];
+          if (!mappings) continue;
+          for (const athlete of group.athletes || []) {
+            const playerId = athlete.athlete?.id || athlete.athlete?.displayName;
+            if (!playerId) continue;
+            if (!players.has(playerId)) {
+              const position = athlete.athlete?.position?.abbreviation || athlete.athlete?.position?.name || (group.name === "goalies" ? "G" : group.name === "defenses" ? "D" : group.name === "forwards" ? "F" : "");
+              players.set(playerId, { player: athlete.athlete.displayName, position, games: new Set(), values: {} });
+            }
+            const player = players.get(playerId);
+            const hasAppearance = (athlete.stats || []).some(value => String(value || "").includes(":")
+              ? durationSeconds(value) > 0
+              : numericStat(value) > 0);
+            if (hasAppearance) player.games.add(eventId);
+            for (const [sourceKey, targetKey] of Object.entries(mappings)) {
+              const sourceIndex = group.keys?.indexOf(sourceKey) ?? -1;
+              if (sourceIndex < 0) continue;
+              const rawValue = athlete.stats?.[sourceIndex];
+              if (targetKey === "timeOnIce") {
+                player.values[targetKey] = (player.values[targetKey] || 0) + durationSeconds(rawValue);
+              } else {
+                const parsed = Number.parseFloat(String(rawValue ?? "").replace(/,/g, ""));
+                if (Number.isFinite(parsed)) player.values[targetKey] = (player.values[targetKey] || 0) + parsed;
+              }
+            }
+          }
+        }
+      }
+      return [...players.values()].map(player => {
+        const values = { ...player.values, games: player.games.size };
+        if (team.leaguePath === "nhl") {
+          values.points = (values.goals || 0) + (values.assists || 0);
+          values.savePct = values.shotsAgainst ? (values.saves || 0) / values.shotsAgainst * 100 : null;
+          values.timeOnIceSeconds = values.timeOnIce || 0;
+          values.timeOnIce = values.timeOnIce ? formatDuration(values.timeOnIce) : "—";
+        }
+        return { player: player.player, position: player.position, games: values.games, ...values };
+      });
+    }
+
+    function seasonCellValue(row, column) {
+      if (column.ratio) return `${row[column.ratio[0]] || 0}/${row[column.ratio[1]] || 0}`;
+      if (column.computedRate) {
+        const [numerator, denominator] = column.computedRate;
+        return row[denominator] ? (row[numerator] / row[denominator]).toFixed(1) : "—";
+      }
+      if (column.computedPercent) {
+        const [numerator, denominator] = column.computedPercent;
+        return row[denominator] ? `${(row[numerator] / row[denominator] * 100).toFixed(1)}%` : "—";
+      }
+      const value = row[column.key];
+      if (value === undefined || value === null) return "—";
+      if (column.duration) return value;
+      if (column.percentage) return `${value.toFixed(1)}%`;
+      return value;
+    }
+
+    function footballSeasonSortValue(row, column) {
+      if (column.computedRate || column.computedPercent) {
+        const [numerator, denominator] = column.computedRate || column.computedPercent;
+        return row[denominator] ? row[numerator] / row[denominator] : Number.NEGATIVE_INFINITY;
+      }
+      return row[column.sortKey || column.key] ?? (column.text ? "" : Number.NEGATIVE_INFINITY);
+    }
+
+    function renderFootballSeasonTable(group) {
+      const columns = [
+        { key: "player", label: "Player", text: true },
+        { key: "position", label: "Pos", text: true },
+        ...group.columns
+      ];
+      const sortState = footballSeasonSorts.get(group.key) || { key: group.defaultSort, direction: "desc" };
+      footballSeasonSorts.set(group.key, sortState);
+      const sortColumn = columns.find(column => column.key === sortState.key) || columns[0];
+      const rows = [...group.rows].sort((first, second) => {
+        const a = footballSeasonSortValue(first, sortColumn);
+        const b = footballSeasonSortValue(second, sortColumn);
+        const order = sortColumn.text ? String(a).localeCompare(String(b)) : Number(a) - Number(b);
+        return order * (sortState.direction === "asc" ? 1 : -1);
+      });
+      if (!rows.length) return `<section class="season-role"><h4>${escapeHtml(group.label)}</h4><p class="stats-unavailable">No stats recorded yet.</p></section>`;
+      return `<section class="season-role"><h4>${escapeHtml(group.label)}</h4>
+        <div class="season-table-wrap"><table class="season-table">
+          <thead><tr>${columns.map(column => `<th scope="col" aria-sort="${sortState.key === column.key ? (sortState.direction === "asc" ? "ascending" : "descending") : "none"}">
+            <button class="sort-button" type="button" data-season-table="${group.key}" data-season-sort="${column.key}" aria-label="Sort ${group.label} by ${column.label}" aria-sort="${sortState.key === column.key ? sortState.direction === "asc" ? "ascending" : "descending" : "none"}">${column.label}</button>
+          </th>`).join("")}</tr></thead>
+          <tbody>${rows.map(row => `<tr>${columns.map(column => `<td>${escapeHtml(seasonCellValue(row, column))}</td>`).join("")}</tr>`).join("")}</tbody>
+        </table></div>
+      </section>`;
+    }
+
+    function renderFootballSeasonTables(team, groups) {
+      const categories = [...new Set(groups.map(group => group.category))];
+      document.querySelector("#season-player-table").innerHTML = categories.map(category => `<section class="season-category">
+        <h3>${category}</h3>
+        ${groups.filter(group => group.category === category).map(renderFootballSeasonTable).join("")}
+      </section>`).join("");
+    }
+
+    function renderSeasonTable(team, rows) {
+      const container = document.querySelector("#season-player-table");
+      if (team.leaguePath === "nfl") {
+        renderFootballSeasonTables(team, rows);
+        return;
+      }
+      const columns = seasonColumns(team);
+      if (!seasonSort.key) {
+        seasonSort = { key: team.leaguePath === "nfl" ? "passYards" : "points", direction: "desc" };
+      }
+      const sortColumn = columns.find(column => column.key === seasonSort.key) || columns[0];
+      const sorted = [...rows].sort((first, second) => {
+        const sortKey = sortColumn.sortKey || sortColumn.key;
+        const a = first[sortKey] ?? (sortColumn.text ? "" : Number.NEGATIVE_INFINITY);
+        const b = second[sortKey] ?? (sortColumn.text ? "" : Number.NEGATIVE_INFINITY);
+        const order = sortColumn.text ? String(a).localeCompare(String(b)) : Number(a) - Number(b);
+        return order * (seasonSort.direction === "asc" ? 1 : -1);
+      });
+      if (!sorted.length) {
+        container.innerHTML = `<p class="stats-unavailable">No player totals are available for this team yet.</p>`;
+        return;
+      }
+      container.innerHTML = `<div class="season-table-wrap"><table class="season-table">
+        <thead><tr>${columns.map(column => `<th scope="col" aria-sort="${seasonSort.key === column.key ? (seasonSort.direction === "asc" ? "ascending" : "descending") : "none"}">
+          <button class="sort-button" type="button" data-season-sort="${column.key}" aria-label="Sort by ${column.label}" aria-sort="${seasonSort.key === column.key ? seasonSort.direction === "asc" ? "ascending" : "descending" : "none"}">${column.label}</button>
+        </th>`).join("")}</tr></thead>
+        <tbody>${sorted.map(row => `<tr>${columns.map(column => `<td>${escapeHtml(seasonCellValue(row, column))}</td>`).join("")}</tr>`).join("")}</tbody>
+      </table></div>`;
+    }
+
+    async function loadSeasonTotals() {
+      const requestId = ++seasonRequestId;
+      const team = teamByKey(document.querySelector("#stats-team").value);
+      if (!team) return;
+      const status = document.querySelector("#season-status");
+      const seasonKey = seasonAggregateKey(team);
+      const seasonYear = seasonYearFor(team);
+      const seasonLabel = team.league === "NHL" ? `${seasonYear - 1}–${String(seasonYear).slice(-2)}` : seasonYear;
+      document.querySelector("#season-label").textContent = `${seasonLabel} season · totals compiled from completed game box scores.`;
+      if (seasonRowsCache.has(seasonKey)) {
+        renderSeasonTable(team, seasonRowsCache.get(seasonKey));
+        status.textContent = `${team.name} · ${seasonLabel} season totals loaded.`;
+        status.classList.remove("error-note");
+        return;
+      }
+      status.textContent = `Loading ${team.name} schedules and season box scores…`;
+      status.classList.remove("error-note");
+      document.querySelector("#season-player-table").innerHTML = "";
+      await loadSchedules();
+      if (requestId !== seasonRequestId) return;
+      const feed = scheduleFeeds.get(team.key);
+      if (!feed) {
+        status.textContent = `${team.name} season schedule could not be loaded.`;
+        status.classList.add("error-note");
+        return;
+      }
+      const completed = (feed.events || []).filter(isCompletedGame);
+      let rosterFeed;
+      if (team.leaguePath === "nfl") {
+        try {
+          rosterFeed = await loadTeamRoster(team);
+        } catch (error) {
+          status.textContent = `${team.name} player positions could not be loaded (${error.message}).`;
+          status.classList.add("error-note");
+          return;
+        }
+      }
+      const missingSummaries = completed.filter(event => !seasonSummaryCache.has(event.id));
+      let completedCount = 0;
+      let summaryFailures = 0;
+      const summaryFailureMessages = [];
+      const workers = Array.from({ length: Math.min(6, missingSummaries.length) }, async () => {
+        while (completedCount < missingSummaries.length) {
+          const event = missingSummaries[completedCount++];
+          const url = `https://site.api.espn.com/apis/site/v2/sports/${team.sport}/${team.leaguePath}/summary?event=${event.id}`;
+          try {
+            seasonSummaryCache.set(event.id, await fetchJson(url, `${team.league} game summary`));
+          } catch (error) {
+            summaryFailures++;
+            summaryFailureMessages.push(error.message);
+          }
+          status.textContent = `Loading ${team.name} box scores… ${Math.min(completedCount, missingSummaries.length)} of ${missingSummaries.length}`;
+        }
+      });
+      await Promise.all(workers);
+      if (requestId !== seasonRequestId) return;
+      const summaries = new Map(completed.map(event => [event.id, seasonSummaryCache.get(event.id)]).filter(([, summary]) => summary));
+      const rows = createSeasonRows(team, summaries, rosterFeed);
+      if (!summaryFailures) seasonRowsCache.set(seasonKey, rows);
+      renderSeasonTable(team, rows);
+      status.textContent = `${team.name} · ${feed.season?.displayName || "current season"} · ${completed.length} completed games${summaryFailures ? ` · ${summaryFailures} game summaries unavailable (${summaryFailureMessages[0]}).` : "."}`;
+      status.classList.toggle("error-note", summaryFailures > 0);
+    }
+
+    document.querySelector(".view-tabs").addEventListener("click", event => {
+      const tab = event.target.closest("[data-view]");
+      if (!tab) return;
+      document.querySelectorAll(".view-tab").forEach(button => {
+        const active = button === tab;
+        button.setAttribute("aria-selected", String(active));
+        document.querySelector(`#view-${button.dataset.view}`).hidden = !active;
+        document.querySelector(`#view-${button.dataset.view}`).classList.toggle("active", active);
+      });
+      if (tab.dataset.view === "schedule") openScheduleView();
+      if (tab.dataset.view === "season") loadSeasonTotals();
+    });
+
+    document.querySelector("#stats-team").addEventListener("change", () => {
+      seasonSort = { key: "", direction: "desc" };
+      footballSeasonSorts.clear();
+      loadSeasonTotals();
+    });
+    document.querySelector("#season-player-table").addEventListener("click", event => {
+      const button = event.target.closest("[data-season-sort]");
+      if (!button) return;
+      if (button.dataset.seasonTable) {
+        const tableKey = button.dataset.seasonTable;
+        const current = footballSeasonSorts.get(tableKey) || { key: "", direction: "desc" };
+        footballSeasonSorts.set(tableKey, {
+          key: button.dataset.seasonSort,
+          direction: current.key === button.dataset.seasonSort && current.direction === "desc" ? "asc" : "desc"
+        });
+        const team = teamByKey(document.querySelector("#stats-team").value);
+        if (team) renderSeasonTable(team, seasonRowsCache.get(seasonAggregateKey(team)) || []);
+        return;
+      }
+      seasonSort = {
+        key: button.dataset.seasonSort,
+        direction: seasonSort.key === button.dataset.seasonSort && seasonSort.direction === "desc" ? "asc" : "desc"
+      };
+      const team = teamByKey(document.querySelector("#stats-team").value);
+      if (team) renderSeasonTable(team, seasonRowsCache.get(seasonAggregateKey(team)) || []);
+    });
+
+    function openScoreboardGame(eventId, teamKey, arizonaDateKey) {
+      const year = Number(arizonaDateKey.slice(0, 4));
+      const month = Number(arizonaDateKey.slice(4, 6));
+      const day = Number(arizonaDateKey.slice(6, 8));
+      selectedDate = new Date(year, month - 1, day);
+      pendingScoreboardSelection = { eventId, teamKey };
+      if (gameDialog.open) gameDialog.close();
+      activeTeamKey = "";
+      document.querySelector("#tab-scoreboard").click();
+      loadScores();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    document.querySelector("#schedule-team-buttons").addEventListener("click", event => {
+      const button = event.target.closest("[data-schedule-team]");
+      if (!button) return;
+      selectedScheduleTeam = button.dataset.scheduleTeam;
+      selectedScheduleEvent = "";
+      renderSchedule();
+    });
+    document.querySelector("#schedule-month").addEventListener("change", event => {
+      const year = Number(event.target.value.slice(0, 4));
+      const month = Number(event.target.value.slice(4, 6));
+      selectedScheduleMonth = new Date(year, month - 1, 1);
+      selectedScheduleEvent = "";
+      renderSchedule();
+    });
+    document.querySelector(".schedule-filter").addEventListener("click", event => {
+      const button = event.target.closest("[data-schedule-filter]");
+      if (!button) return;
+      scheduleFilter = button.dataset.scheduleFilter;
+      document.querySelectorAll("[data-schedule-filter]").forEach(item => item.setAttribute("aria-pressed", String(item === button)));
+      selectedScheduleEvent = "";
+      renderSchedule();
+    });
+    document.querySelector("#schedule-calendar").addEventListener("click", event => {
+      const button = event.target.closest("[data-schedule-event]");
+      if (!button) return;
+      selectedScheduleEvent = button.dataset.scheduleEvent;
+      const entry = getScheduleEvents().find(item => String(item.event.id) === selectedScheduleEvent);
+      renderScheduleSelection(entry);
+    });
+    document.querySelector("#schedule-selected").addEventListener("click", event => {
+      const button = event.target.closest("[data-scoreboard-event]");
+      if (!button) return;
+      openScoreboardGame(button.dataset.scoreboardEvent, button.dataset.scoreboardTeam, button.dataset.scoreboardDate);
+    });
+
     scoreboard.addEventListener("click", event => {
+      const seasonButton = event.target.closest("[data-season-team]");
+      if (seasonButton) {
+        const teamKey = seasonButton.dataset.seasonTeam;
+        const statsTeam = document.querySelector("#stats-team");
+        const teamChanged = statsTeam.value !== teamKey;
+        statsTeam.value = teamKey;
+        if (teamChanged) {
+          seasonSort = { key: "", direction: "desc" };
+          footballSeasonSorts.clear();
+        }
+        document.querySelector("#tab-season").click();
+        document.querySelector("#view-season").scrollIntoView({ behavior: "smooth", block: "start" });
+        return;
+      }
       const button = event.target.closest("[data-expand-team]");
       if (!button) return;
       const gameData = displayedGames.get(button.dataset.expandTeam);
@@ -934,6 +2008,18 @@
       const time = new Intl.DateTimeFormat(undefined, { hour: "numeric", minute: "2-digit", second: "2-digit" }).format(new Date());
       updated.textContent = feedFailures === results.length ? "Score feed unavailable" : `${failures ? "Partial update" : "Updated"} ${time}`;
       updated.classList.toggle("error-note", failures > 0);
+      if (pendingScoreboardSelection) {
+        const selection = pendingScoreboardSelection;
+        const gameData = displayedGames.get(selection.teamKey);
+        pendingScoreboardSelection = undefined;
+        if (gameData && String(gameData[1].eventId) === String(selection.eventId)) {
+          activeTeamKey = selection.teamKey;
+          renderExpandedGame(...gameData);
+        } else {
+          updated.textContent = "That game could not be opened from the scoreboard.";
+          updated.classList.add("error-note");
+        }
+      }
 
       if (isToday(selectedDate)) refreshTimer = setTimeout(loadScores, 60000);
     }

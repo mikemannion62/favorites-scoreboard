@@ -3,20 +3,20 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#f1f0e9">
+  <meta name="theme-color" content="#101820">
   <title>Favorites Scoreboard</title>
   <style>
     :root {
-      color-scheme: light;
-      --paper: #f1f0e9;
-      --ink: #191d1c;
-      --muted: #727772;
-      --line: #d7d8d0;
-      --card: #fbfbf7;
-      --red: #d44a3d;
-      --green: #26745e;
-      --gold: #e4b947;
-      --blue: #427a9b;
+      color-scheme: dark;
+      --paper: #101820;
+      --ink: #f4f2ed;
+      --muted: #a7bdd1;
+      --line: #304a60;
+      --card: #142635;
+      --red: #ff6c78;
+      --green: #75d7a5;
+      --gold: #f4c864;
+      --blue: #55b8e8;
       font-family: "Aptos", "Segoe UI", sans-serif;
     }
 
@@ -26,22 +26,23 @@
       margin: 0;
       min-width: 320px;
       background-color: var(--paper);
-      background-image: radial-gradient(#c9cbc2 0.65px, transparent 0.65px);
-      background-size: 14px 14px;
+      background-image: radial-gradient(ellipse at 85% 0%, #1c3c54 0%, transparent 36%), linear-gradient(180deg, #0d1b29, var(--paper) 420px);
+      background-repeat: no-repeat;
       color: var(--ink);
     }
 
     button { font: inherit; }
 
     .masthead {
-      min-height: 58px;
+      min-height: 68px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 16px;
       padding: 0 5vw;
-      color: #f8f8f3;
-      background: var(--ink);
+      color: var(--ink);
+      border-bottom: 1px solid var(--line);
+      background: #0c1926;
     }
 
     .wordmark, .mast-meta, .eyebrow, .league, .status, .date-label, .updated {
@@ -51,8 +52,10 @@
       text-transform: uppercase;
     }
 
-    .wordmark { font-size: 12px; }
-    .mast-meta { color: #bec4bd; font-size: 10px; }
+    .wordmark { display: flex; align-items: center; gap: 10px; font-size: 17px; }
+    .wordmark-mark { color: var(--blue); font-size: 24px; }
+    .wordmark-accent { color: var(--blue); }
+    .mast-meta { color: var(--muted); font-size: 10px; }
 
     .mast-meta span {
       display: inline-block;
@@ -65,26 +68,26 @@
       vertical-align: 1px;
     }
 
-    main { width: min(1160px, 90vw); margin: 0 auto; }
+    main { width: min(1400px, 94vw); margin: 0 auto; }
 
     .intro {
       display: flex;
       justify-content: space-between;
       align-items: end;
       gap: 24px;
-      padding: 47px 0 27px;
+      padding: 36px 0 24px;
       border-bottom: 1px solid var(--line);
     }
 
-    .eyebrow { margin: 0 0 10px; color: var(--red); font-size: 10px; }
+    .eyebrow { margin: 0 0 10px; color: var(--blue); font-size: 10px; }
 
     h1 {
       margin: 0;
-      font-family: Georgia, "Times New Roman", serif;
-      font-size: clamp(36px, 5.5vw, 62px);
-      font-weight: 500;
-      line-height: .98;
-      letter-spacing: 0;
+      font-family: "Bahnschrift", "Arial Narrow", sans-serif;
+      font-size: clamp(32px, 4vw, 48px);
+      font-weight: 700;
+      line-height: 1;
+      letter-spacing: .02em;
     }
 
     .intro-note {
@@ -120,8 +123,8 @@
       cursor: pointer;
     }
 
-    .icon-button:hover, .today-button:hover { border-color: var(--ink); }
-    .icon-button:focus-visible, .today-button:focus-visible { outline: 2px solid var(--red); outline-offset: 2px; }
+    .icon-button:hover, .today-button:hover { border-color: var(--blue); }
+    .icon-button:focus-visible, .today-button:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
     .icon-button svg { width: 14px; height: 14px; }
 
     .today-button {
@@ -137,28 +140,30 @@
     .scoreboard {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
+      align-items: start;
       gap: 14px;
       padding-bottom: 28px;
     }
 
     .team-card {
-      --team-color: var(--red);
+      --team-color: #3e8bff;
       position: relative;
       display: flex;
       min-height: 330px;
       flex-direction: column;
       overflow: hidden;
       border: 1px solid var(--line);
-      border-radius: 3px;
+      border-radius: 7px;
       background: var(--card);
+      box-shadow: 0 10px 24px #0000001f;
       animation: settle-in .42s both;
     }
 
     .team-card:nth-child(2) { animation-delay: .07s; }
     .team-card:nth-child(3) { animation-delay: .14s; }
-    .team-card::before { position: absolute; inset: 0 0 auto; height: 4px; background: var(--team-color); content: ""; }
-    .team-card[data-team="sabres"] { --team-color: #26745e; }
-    .team-card[data-team="cardinals"] { --team-color: #b33d3d; }
+    .team-card::before { position: absolute; inset: 0 auto 0 0; width: 5px; background: var(--team-color); content: ""; }
+    .team-card[data-team="sabres"] { --team-color: #f2bf45; }
+    .team-card[data-team="cardinals"] { --team-color: #f23f60; }
 
     .card-top {
       display: flex;
@@ -171,7 +176,7 @@
     .league { color: var(--muted); font-size: 9px; }
     .status { min-height: 20px; color: var(--muted); font-size: 9px; }
 
-    .status.live { color: #fff; padding: 5px 7px; border-radius: 2px; background: var(--red); }
+    .status.live { color: #fff; padding: 5px 7px; border-radius: 3px; background: #b9253d; }
     .status.final { color: var(--green); }
 
     .team-identity {
@@ -190,9 +195,9 @@
 
     .team-name {
       margin: 0;
-      font-family: Georgia, "Times New Roman", serif;
+      font-family: "Bahnschrift", "Arial Narrow", sans-serif;
       font-size: 22px;
-      font-weight: 500;
+      font-weight: 700;
       line-height: 1.08;
     }
 
@@ -207,14 +212,14 @@
       padding: 16px 19px;
       border-top: 1px solid var(--line);
       border-bottom: 1px solid var(--line);
-      background: #f5f5ef;
+      background: #0e1e2c;
     }
 
     .score-lines { display: grid; gap: 7px; }
     .score-line { display: flex; min-width: 0; align-items: center; gap: 9px; }
     .score-logo { width: 28px; height: 28px; flex: 0 0 28px; object-fit: contain; }
     .score-team-name { overflow: hidden; font-size: 13px; font-weight: 600; text-overflow: ellipsis; white-space: nowrap; }
-    .score { flex: 0 0 auto; margin-left: auto; font-family: Georgia, "Times New Roman", serif; font-size: 25px; font-variant-numeric: tabular-nums; }
+    .score { flex: 0 0 auto; margin-left: auto; font-family: "Bahnschrift", "Arial Narrow", sans-serif; font-size: 28px; font-weight: 700; font-variant-numeric: tabular-nums; }
     .game-detail { margin: 9px 0 0; color: var(--muted); font-size: 10px; }
 
     .scoring-summary { margin-top: 13px; padding-top: 11px; border-top: 1px solid var(--line); }
@@ -240,8 +245,8 @@
       font: inherit;
     }
     .expand-button { flex: 0 0 auto; padding: 6px 9px; font-size: 10px; font-weight: 700; }
-    .expand-button:hover, .dialog-close:hover { border-color: var(--ink); }
-    .expand-button:focus-visible, .dialog-close:focus-visible { outline: 2px solid var(--red); outline-offset: 2px; }
+    .expand-button:hover, .dialog-close:hover { border-color: var(--blue); color: var(--blue); }
+    .expand-button:focus-visible, .dialog-close:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
     .possession-indicator { display: inline-flex; align-items: center; gap: 4px; color: var(--green); font-size: 9px; font-weight: 700; }
     .possession-indicator svg { width: 15px; height: 15px; }
 
@@ -257,7 +262,7 @@
       background: var(--paper);
       color: var(--ink);
     }
-    .game-dialog::backdrop { background: #191d1cdd; }
+    .game-dialog::backdrop { background: #050b10e6; }
     .dialog-shell { display: flex; width: 100%; height: 100%; flex-direction: column; }
     .dialog-header {
       position: sticky;
@@ -323,8 +328,8 @@
 
     .view-tabs { display: flex; flex-wrap: wrap; gap: 8px; padding: 18px 0 0; border-bottom: 1px solid var(--line); }
     .view-tab { padding: 10px 12px; border: 0; border-bottom: 3px solid transparent; background: transparent; color: var(--muted); cursor: pointer; font-size: 11px; font-weight: 700; }
-    .view-tab[aria-selected="true"] { border-bottom-color: var(--red); color: var(--ink); }
-    .view-tab:focus-visible, .select-control:focus-visible, .schedule-team-button:focus-visible, .schedule-filter button:focus-visible, .schedule-game:focus-visible, .schedule-selected button:focus-visible, .sort-button:focus-visible { outline: 2px solid var(--red); outline-offset: 2px; }
+    .view-tab[aria-selected="true"] { border-bottom-color: var(--blue); color: var(--ink); }
+    .view-tab:focus-visible, .select-control:focus-visible, .schedule-team-button:focus-visible, .schedule-filter button:focus-visible, .schedule-game:focus-visible, .schedule-selected button:focus-visible, .sort-button:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
     .content-view { display: none; padding: 20px 0 36px; }
     .content-view.active { display: block; }
     .view-heading { display: flex; align-items: end; justify-content: space-between; gap: 16px; margin-bottom: 20px; }
@@ -337,7 +342,7 @@
     .season-table-wrap { overflow-x: auto; border: 1px solid var(--line); background: var(--card); }
     .season-table { width: 100%; border-collapse: collapse; font-size: 12px; font-variant-numeric: tabular-nums; white-space: nowrap; }
     .season-table th, .season-table td { padding: 10px 9px; border-bottom: 1px solid var(--line); text-align: right; }
-    .season-table thead { color: var(--muted); background: #f5f5ef; }
+    .season-table thead { color: var(--muted); background: #0e1e2c; }
     .season-table th:first-child, .season-table td:first-child { text-align: left; }
     .season-table tbody tr:last-child th, .season-table tbody tr:last-child td { border-bottom: 0; }
     .season-category { margin-top: 26px; }
@@ -345,28 +350,31 @@
     .season-role { margin: 16px 0 22px; }
     .season-role h4 { margin: 0 0 8px; font-size: 13px; }
     .sort-button { padding: 0; border: 0; background: transparent; color: inherit; cursor: pointer; font: inherit; font-weight: 700; }
-    .sort-button[aria-sort="ascending"]::after { content: " ↑"; color: var(--red); }
-    .sort-button[aria-sort="descending"]::after { content: " ↓"; color: var(--red); }
+    .sort-button[aria-sort="ascending"]::after { content: " ↑"; color: var(--blue); }
+    .sort-button[aria-sort="descending"]::after { content: " ↓"; color: var(--blue); }
 
     .schedule-team-buttons { display: flex; flex-wrap: wrap; gap: 8px; margin: 18px 0; }
     .schedule-team-button { display: inline-flex; min-width: 46px; min-height: 42px; align-items: center; justify-content: center; padding: 4px 10px; border: 1px solid var(--line); border-radius: 3px; background: var(--card); color: var(--ink); cursor: pointer; font: inherit; font-size: 11px; font-weight: 700; }
     .schedule-team-button img { width: 30px; height: 30px; object-fit: contain; }
-    .schedule-team-button[aria-pressed="true"] { border-color: var(--ink); box-shadow: inset 0 0 0 1px var(--ink); }
+    .schedule-team-button[aria-pressed="true"] { border-color: var(--blue); background: #19415a; box-shadow: inset 0 0 0 1px var(--blue); }
     .schedule-toolbar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; margin: 18px 0; }
     .schedule-nav, .schedule-filter { display: flex; align-items: center; gap: 7px; }
     .schedule-nav label { color: var(--muted); font-size: 11px; font-weight: 700; }
     .schedule-filter button { min-height: 34px; padding: 0 10px; border: 1px solid var(--line); border-radius: 3px; background: var(--card); color: var(--ink); cursor: pointer; font-size: 11px; }
-    .schedule-filter button[aria-pressed="true"] { border-color: var(--ink); background: var(--ink); color: var(--card); }
+    .schedule-filter button[aria-pressed="true"] { border-color: var(--blue); background: #19415a; color: var(--ink); }
     .calendar-grid { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); border-top: 1px solid var(--line); border-left: 1px solid var(--line); background: var(--card); }
     .calendar-weekday, .calendar-day { min-width: 0; padding: 8px; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); }
     .calendar-weekday { color: var(--muted); font-size: 10px; font-weight: 700; text-align: center; text-transform: uppercase; }
     .calendar-day { min-height: 115px; }
-    .calendar-day.outside-month { background: #f5f5ef; color: #a4a8a0; }
+    .calendar-day.outside-month { background: #0e1e2c; color: #8299ac; }
     .calendar-day-number { margin-bottom: 6px; font-size: 11px; font-weight: 700; }
     .calendar-games { display: grid; gap: 4px; }
-    .schedule-game { display: block; width: 100%; overflow: hidden; padding: 5px 6px; border: 0; border-left: 3px solid var(--blue); background: #427a9b12; color: var(--ink); cursor: pointer; font-size: 9px; line-height: 1.35; text-align: left; }
-    .schedule-game.completed { border-left-color: var(--line); background: #7777770d; }
-    .schedule-game:hover { background: #427a9b25; }
+    .schedule-game { display: block; width: 100%; overflow: hidden; padding: 5px 6px; border: 0; border-left: 3px solid var(--blue); background: #55b8e81a; color: var(--ink); cursor: pointer; font-size: 9px; line-height: 1.35; text-align: left; }
+    .schedule-game[data-team="cardinals"] { border-left-color: #f23f60; }
+    .schedule-game[data-team="bills"] { border-left-color: #3e8bff; }
+    .schedule-game[data-team="sabres"] { border-left-color: #f2bf45; }
+    .schedule-game.completed { background: #ffffff0b; }
+    .schedule-game:hover { background: #55b8e833; }
     .schedule-game-matchup { display: block; }
     .schedule-game-time, .schedule-game-score { display: block; margin-top: 4px; color: var(--muted); font-size: 9px; font-variant-numeric: tabular-nums; }
     .schedule-game-score { white-space: nowrap; }
@@ -374,8 +382,8 @@
     .game-result { display: inline-block; margin-right: 4px; font-size: 9px; font-weight: 800; }
     .game-result.win { color: var(--green); }
     .game-result.loss { color: var(--red); }
-    .game-result.ot-loss, .game-result.tie { color: #a77700; }
-    .schedule-selected button { padding: 7px 10px; border: 1px solid var(--line); border-radius: 3px; background: var(--ink); color: var(--card); cursor: pointer; font: inherit; font-size: 11px; font-weight: 700; }
+    .game-result.ot-loss, .game-result.tie { color: var(--gold); }
+    .schedule-selected button { padding: 7px 10px; border: 1px solid var(--blue); border-radius: 3px; background: #19415a; color: var(--ink); cursor: pointer; font: inherit; font-size: 11px; font-weight: 700; }
     .schedule-selected .game-result { font-size: 12px; }
     .schedule-selected { margin-top: 18px; padding: 16px; border: 1px solid var(--line); background: var(--card); }
     .schedule-selected h3 { margin: 0 0 7px; font-family: Georgia, "Times New Roman", serif; font-size: 20px; font-weight: 500; }
@@ -435,15 +443,15 @@
 </head>
 <body>
   <header class="masthead">
-    <div class="wordmark">The Favorites Desk</div>
+    <div class="wordmark"><span class="wordmark-mark" aria-hidden="true">★</span><span>Favorites <span class="wordmark-accent">Scoreboard</span></span></div>
     <div class="mast-meta"><span aria-hidden="true"></span>Scores refresh every minute</div>
   </header>
 
   <main>
     <section class="intro" aria-labelledby="page-title">
       <div>
-        <p class="eyebrow">Buffalo &middot; Arizona</p>
-        <h1 id="page-title">The scoreboard</h1>
+        <p class="eyebrow">Arizona &middot; Buffalo &middot; Game night</p>
+        <h1 id="page-title">Your teams. Your games.</h1>
       </div>
       <p class="intro-note">Just your teams, their games, and the score as it moves.</p>
     </section>
@@ -451,7 +459,7 @@
     <nav class="view-tabs" aria-label="Scoreboard views" role="tablist">
       <button class="view-tab" id="tab-scoreboard" type="button" role="tab" aria-selected="true" aria-controls="view-scoreboard" data-view="scoreboard">Scoreboard</button>
       <button class="view-tab" id="tab-season" type="button" role="tab" aria-selected="false" aria-controls="view-season" data-view="season">Season totals</button>
-      <button class="view-tab" id="tab-schedule" type="button" role="tab" aria-selected="false" aria-controls="view-schedule" data-view="schedule">Schedule &amp; results</button>
+      <button class="view-tab" id="tab-schedule" type="button" role="tab" aria-selected="false" aria-controls="view-schedule" data-view="schedule">Calendar &amp; results</button>
     </nav>
 
     <section class="content-view active" id="view-scoreboard" role="tabpanel" aria-labelledby="tab-scoreboard">
@@ -976,7 +984,7 @@
     function renderCard(teamConfig, events, summaries, summaryUnavailable) {
       const event = gameForTeam(events, teamConfig.id);
       const game = event ? gameInfo(event, teamConfig.id, teamConfig.leaguePath) : null;
-      const teamLogo = game?.team?.team?.logo || "";
+      const teamLogo = game?.team?.team?.logo || teamConfig.logo;
       const statusClass = game?.isLive ? "live" : game?.isFinal ? "final" : "";
       const statusText = game ? (game.isLive ? "Live now" : game.isFinal ? "Final" : "Game day") : "No game";
       const summary = game ? summaries.get(game.eventId) : null;
@@ -1264,7 +1272,7 @@
                 ? escapeHtml(status.shortDetail || "In progress")
                 : escapeHtml(formatScheduleTime(event.date));
             const teamNames = matchup.label;
-            return `<button class="schedule-game${completed ? " completed" : ""}" type="button" data-schedule-event="${escapeHtml(event.id)}" aria-label="${escapeHtml(`${team.name}: ${teamNames}, ${completed ? (matchup.outcome?.text || "Final") : meta}`)}">
+            return `<button class="schedule-game${completed ? " completed" : ""}" type="button" data-team="${team.key}" data-schedule-event="${escapeHtml(event.id)}" aria-label="${escapeHtml(`${team.name}: ${teamNames}, ${completed ? (matchup.outcome?.text || "Final") : meta}`)}">
               <span class="schedule-game-matchup">${escapeHtml(teamNames)}</span>
               <span class="${completed ? "schedule-game-score" : "schedule-game-time"}">${meta}</span>
             </button>`;
